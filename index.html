@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Control de acceso del Bautizo y Primer Añito de Aldo Yosef.">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="robots" content="noindex,nofollow">
+
+  <title>Aldo Yosef · Control de acceso</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --navy:#0b2447;
+      --navy-2:#173b67;
+      --gold:#b89452;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --soft:#f8fafc;
+      --success:#2f6f4e;
+      --success-soft:#eef7f1;
+      --danger:#9f3a38;
+      --danger-soft:#fff4f3;
+      --white:#ffffff;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;min-height:100%;background:#f7f8fa;color:var(--text)}
+    body{font-family:"DM Sans",sans-serif}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:disabled{cursor:not-allowed;opacity:.55}
+    .hidden{display:none!important}
+
+    .page{
+      width:100%;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:28px 16px 40px;
+    }
+
+    .shell{
+      width:100%;
+      max-width:720px;
+    }
+
+    .brand{
+      text-align:center;
+      padding:10px 0 26px;
+    }
+
+    .brand-cross{
+      color:var(--gold);
+      font-family:"Cormorant Garamond",serif;
+      font-size:31px;
+      line-height:1;
+      margin-bottom:7px;
+    }
+
+    .brand h1{
+      margin:0;
+      color:var(--navy);
+      font-family:"Cormorant Garamond",serif;
+      font-size:35px;
+      font-weight:600;
+      letter-spacing:.055em;
+      line-height:1.05;
+      text-transform:uppercase;
+    }
+
+    .brand p{
+      margin:8px 0 0;
+      color:var(--gold);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+    }
+
+    .brand-rule{
+      width:54px;
+      height:1px;
+      margin:17px auto 0;
+      background:var(--gold);
+      opacity:.7;
+    }
+
+    .card{
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow:0 10px 28px rgba(11,36,71,.055);
+    }
+
+    .search-card{
+      padding:24px;
+    }
+
+    .label{
+      display:block;
+      margin-bottom:9px;
+      color:var(--navy);
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .search-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+    }
+
+    .search-row input{
+      width:100%;
+      min-height:52px;
+      padding:13px 15px;
+      color:var(--navy);
+      background:#fff;
+      border:1px solid #d4d8de;
+      border-radius:10px;
+      outline:none;
+      font-size:18px;
+      font-weight:600;
+    }
+
+    .search-row input:focus{
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px rgba(184,148,82,.12);
+    }
+
+    .primary{
+      min-height:52px;
+      padding:0 20px;
+      border:0;
+      border-radius:10px;
+      background:var(--navy);
+      color:#fff;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.04em;
+    }
+
+    .primary:hover:not(:disabled){background:var(--navy-2)}
+
+    .search-status{
+      min-height:18px;
+      margin-top:11px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .search-status.error{color:var(--danger)}
+
+    .result-card{
+      margin-top:18px;
+      overflow:hidden;
+    }
+
+    .result-head{
+      padding:22px 24px;
+      border-bottom:1px solid var(--line);
+      background:#fbfcfd;
+    }
+
+    .result-eyebrow{
+      margin:0;
+      color:var(--gold);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+    }
+
+    .result-head h2{
+      margin:5px 0 0;
+      color:var(--navy);
+      font-family:"Cormorant Garamond",serif;
+      font-size:28px;
+      font-weight:600;
+    }
+
+    .metrics{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:17px;
+    }
+
+    .metric{
+      padding:11px 12px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fff;
+    }
+
+    .metric span{
+      display:block;
+      color:var(--muted);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .metric strong{
+      display:block;
+      margin-top:3px;
+      color:var(--navy);
+      font-size:21px;
+    }
+
+    .members{
+      padding:22px 24px 24px;
+    }
+
+    .members-title{
+      margin:0 0 12px;
+      color:var(--navy);
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .select-all{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      margin-bottom:9px;
+      padding:5px 8px;
+      color:var(--muted);
+      font-size:11px;
+      cursor:pointer;
+    }
+
+    .member-list{
+      display:grid;
+      gap:8px;
+    }
+
+    .member{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-height:51px;
+      padding:11px 12px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fff;
+    }
+
+    .member.pending{cursor:pointer}
+    .member.pending:hover{border-color:#d1b77f}
+    .member.entered{
+      background:var(--success-soft);
+      border-color:#cfe4d6;
+    }
+
+    .member input{
+      width:17px;
+      height:17px;
+      accent-color:var(--gold);
+    }
+
+    .member-name{
+      flex:1;
+      color:var(--navy);
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .badge{
+      flex:none;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:9px;
+      font-weight:700;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+
+    .badge.entered{color:var(--success);background:#dfeee4}
+    .badge.pending{color:#6b7280;background:#f1f3f5}
+
+    .register{
+      width:100%;
+      margin-top:17px;
+    }
+
+    .notice{
+      margin-top:18px;
+      padding:18px 20px;
+      border-radius:14px;
+      border:1px solid #cfe4d6;
+      background:var(--success-soft);
+      color:var(--success);
+      box-shadow:0 8px 22px rgba(47,111,78,.06);
+    }
+
+    .notice-row{
+      display:flex;
+      gap:11px;
+      align-items:flex-start;
+    }
+
+    .notice h3{
+      margin:0;
+      font-size:17px;
+    }
+
+    .notice p{
+      margin:4px 0 0;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .error-box{
+      margin-top:14px;
+      padding:12px 14px;
+      color:var(--danger);
+      background:var(--danger-soft);
+      border:1px solid #efcbc7;
+      border-radius:10px;
+      font-size:12px;
+    }
+
+    .counter{
+      margin-top:18px;
+      padding:22px 24px;
+      text-align:center;
+    }
+
+    .counter span{
+      display:block;
+      color:var(--muted);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    .counter strong{
+      display:block;
+      margin-top:3px;
+      color:var(--navy);
+      font-family:"Cormorant Garamond",serif;
+      font-size:48px;
+      font-weight:600;
+      line-height:1;
+    }
+
+    .counter small{
+      display:block;
+      margin-top:3px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    footer{
+      padding:22px 0 0;
+      text-align:center;
+      color:#9297a0;
+      font-size:10px;
+      line-height:1.5;
+    }
+
+    @media(max-width:620px){
+      .page{padding:20px 12px 30px}
+      .brand{padding-bottom:21px}
+      .brand h1{font-size:31px}
+      .search-card{padding:19px}
+      .search-row{grid-template-columns:1fr}
+      .primary{width:100%}
+      .metrics{grid-template-columns:1fr 1fr 1fr}
+      .metric{padding:9px}
+      .metric strong{font-size:19px}
+      .members{padding:19px}
+      .result-head{padding:19px}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="shell">
+
+      <header class="brand">
+        <div class="brand-cross">✝</div>
+        <h1>Aldo Yosef</h1>
+        <p>Control de acceso</p>
+        <div class="brand-rule"></div>
+      </header>
+
+      <section class="card search-card" aria-label="Buscar invitación">
+        <label for="invitation-search" class="label">Ingresa número de invitación:</label>
+        <form id="search-form" class="search-row">
+          <input
+            id="invitation-search"
+            type="search"
+            inputmode="numeric"
+            autocomplete="off"
+            enterkeyhint="search"
+            placeholder="Ej. 25"
+            aria-label="Número de invitación"
+          >
+          <button id="search-button" type="submit" class="primary">
+            BUSCAR INVITACIÓN
+          </button>
+        </form>
+        <div id="search-status" class="search-status" role="status" aria-live="polite"></div>
+      </section>
+
+      <section id="result-card" class="card result-card hidden" aria-live="polite">
+        <div class="result-head">
+          <p id="result-number" class="result-eyebrow"></p>
+          <h2 id="result-family"></h2>
+
+          <div class="metrics">
+            <div class="metric">
+              <span>Asignados</span>
+              <strong id="assigned-count">0</strong>
+            </div>
+            <div class="metric">
+              <span>Ingresaron</span>
+              <strong id="entered-count">0</strong>
+            </div>
+            <div class="metric">
+              <span>Pendientes</span>
+              <strong id="pending-count">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="members">
+          <p class="members-title">Selecciona a las personas que están ingresando:</p>
+
+          <label id="select-all-wrap" class="select-all hidden">
+            <input id="select-all" type="checkbox">
+            Seleccionar todos los pendientes
+          </label>
+
+          <div id="member-list" class="member-list"></div>
+
+          <div id="selection-error" class="error-box hidden"></div>
+
+          <button id="register-button" type="button" class="primary register">
+            REGISTRAR INGRESO
+          </button>
+        </div>
+      </section>
+
+      <section id="success-box" class="notice hidden" aria-live="polite">
+        <div class="notice-row">
+          <i data-lucide="circle-check"></i>
+          <div>
+            <h3>Ingreso registrado</h3>
+            <p id="success-text"></p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card counter" aria-label="Contador de ingresos">
+        <span>Ingresos registrados</span>
+        <strong id="global-count">0</strong>
+        <small>personas</small>
+      </aside>
+
+      <footer>
+        Uso exclusivo para el control de acceso del evento.<br>
+        © 2026 FM · Todos los derechos reservados.
+      </footer>
+
+    </div>
+  </main>
+
+<script>
+(function(){
+  "use strict";
+
+  const SUPABASE_URL = "https://ezqerdrtenbzahnxhnzi.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_TDbgtrrAqEMXJTTRdvDJcg_qPqHwueC";
+
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const $ = id => document.getElementById(id);
+
+  let currentInvitation = null;
+  let resetTimer = null;
+
+  function normalize(value){
+    return String(value == null ? "" : value)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"")
+      .replace(/\s+/g," ")
+      .trim();
+  }
+
+  function escapeHtml(value){
+    return String(value == null ? "" : value).replace(/[&<>"']/g, c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c]));
+  }
+
+  function show(id){ $(id).classList.remove("hidden"); }
+  function hide(id){ $(id).classList.add("hidden"); }
+
+  function setSearchStatus(text, isError=false){
+    const el = $("search-status");
+    el.textContent = text;
+    el.classList.toggle("error", isError);
+  }
+
+  function clearSelectionError(){
+    $("selection-error").textContent = "";
+    hide("selection-error");
+  }
+
+  function resetForNextSearch(){
+    clearTimeout(resetTimer);
+    currentInvitation = null;
+    $("invitation-search").value = "";
+    $("member-list").replaceChildren();
+    $("select-all").checked = false;
+    hide("select-all-wrap");
+    hide("result-card");
+    hide("success-box");
+    clearSelectionError();
+    setSearchStatus("");
+    $("invitation-search").focus();
+  }
+
+  function getEnteredNames(record){
+    return (record.ingresos || []).map(item => item.nombre_integrante);
+  }
+
+  function isEntered(enteredNames, name){
+    const target = normalize(name);
+    return enteredNames.some(item => normalize(item) === target);
+  }
+
+  function displayFamily(record){
+    const members = record.integrantes || [];
+    return record.familia || (members.length === 1 ? members[0] : "Invitación");
+  }
+
+  async function refreshGlobalCount(){
+    const { count, error } = await db
+      .from("ingresos")
+      .select("id", { count:"exact", head:true });
+
+    if (error){
+      console.error("No se pudo actualizar el contador:", error);
+      return;
+    }
+
+    $("global-count").textContent = count || 0;
+  }
+
+  async function searchInvitation(number){
+    clearTimeout(resetTimer);
+    hide("success-box");
+    hide("result-card");
+    clearSelectionError();
+    setSearchStatus("Buscando…");
+
+    const searched = String(number == null ? "" : number).trim();
+    if (!searched){
+      setSearchStatus("Ingresa un número de invitación.", true);
+      return;
+    }
+
+    const { data, error } = await db.rpc("buscar_invitacion_control", {
+      p_numero: searched
+    });
+
+    if (error){
+      console.error(error);
+      setSearchStatus("No fue posible realizar la búsqueda. Inténtalo nuevamente.", true);
+      return;
+    }
+
+    const record = Array.isArray(data) && data.length ? data[0] : null;
+
+    if (!record){
+      currentInvitation = null;
+      setSearchStatus("Número de invitación no localizado.", true);
+      return;
+    }
+
+    currentInvitation = record;
+    setSearchStatus("");
+    renderInvitation(record);
+  }
+
+  function renderInvitation(record){
+    const members = Array.isArray(record.integrantes) ? record.integrantes : [];
+    const enteredNames = getEnteredNames(record);
+    const assigned = Number(record.boletos_asignados || 0);
+    const enteredCount = enteredNames.length;
+    const pendingCount = Math.max(0, assigned - enteredCount);
+
+    $("result-number").textContent = "INVITACIÓN " + record.numero_invitacion;
+    $("result-family").textContent = displayFamily(record);
+    $("assigned-count").textContent = assigned;
+    $("entered-count").textContent = enteredCount;
+    $("pending-count").textContent = pendingCount;
+
+    const list = $("member-list");
+    list.replaceChildren();
+
+    let selectableCount = 0;
+
+    members.forEach(name => {
+      const entered = isEntered(enteredNames, name);
+
+      const label = document.createElement("label");
+      label.className = "member " + (entered ? "entered" : "pending");
+
+      if (entered){
+        label.innerHTML = [
+          '<i data-lucide="circle-check" style="width:18px;height:18px;color:#2f6f4e"></i>',
+          '<span class="member-name">' + escapeHtml(name) + '</span>',
+          '<span class="badge entered">Ingresó</span>'
+        ].join("");
+      } else {
+        selectableCount++;
+        label.innerHTML = [
+          '<input class="member-check" type="checkbox" value="' + escapeHtml(name) + '">',
+          '<span class="member-name">' + escapeHtml(name) + '</span>',
+          '<span class="badge pending">Pendiente</span>'
+        ].join("");
+      }
+
+      list.appendChild(label);
+    });
+
+    if (selectableCount > 1) show("select-all-wrap");
+    else hide("select-all-wrap");
+
+    $("select-all").checked = false;
+    $("register-button").disabled = selectableCount === 0;
+    $("register-button").textContent = selectableCount === 0
+      ? "TODOS LOS INGRESOS FUERON REGISTRADOS"
+      : "REGISTRAR INGRESO";
+
+    show("result-card");
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  $("search-form").addEventListener("submit", event => {
+    event.preventDefault();
+    searchInvitation($("invitation-search").value);
+  });
+
+  $("select-all").addEventListener("change", () => {
+    document.querySelectorAll(".member-check").forEach(input => {
+      input.checked = $("select-all").checked;
+    });
+  });
+
+  $("member-list").addEventListener("change", event => {
+    if (!event.target.classList.contains("member-check")) return;
+    const checks = [...document.querySelectorAll(".member-check")];
+    const selected = checks.filter(x => x.checked).length;
+    $("select-all").checked = checks.length > 0 && selected === checks.length;
+    $("select-all").indeterminate = selected > 0 && selected < checks.length;
+  });
+
+  $("register-button").addEventListener("click", async () => {
+    if (!currentInvitation) return;
+
+    const selected = [...document.querySelectorAll(".member-check:checked")]
+      .map(input => input.value);
+
+    if (!selected.length){
+      $("selection-error").textContent =
+        "Selecciona por lo menos una persona para registrar su ingreso.";
+      show("selection-error");
+      return;
+    }
+
+    clearSelectionError();
+
+    const button = $("register-button");
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = "REGISTRANDO…";
+
+    const successful = [];
+    const failed = [];
+
+    for (const name of selected){
+      const { data, error } = await db.rpc("registrar_ingreso_control", {
+        p_invitacion_id: currentInvitation.invitacion_id,
+        p_nombre_integrante: name
+      });
+
+      if (error){
+        console.error(error);
+        failed.push(name);
+        continue;
+      }
+
+      const result = data || {};
+      if (result.ok === true) successful.push(name);
+      else failed.push(name);
+    }
+
+    button.disabled = false;
+    button.textContent = originalText;
+
+    if (!successful.length){
+      $("selection-error").textContent =
+        "No fue posible registrar el ingreso. Verifica e inténtalo nuevamente.";
+      show("selection-error");
+      return;
+    }
+
+    await refreshGlobalCount();
+
+    $("success-text").textContent =
+      successful.length === 1
+        ? "1 persona ingresó correctamente."
+        : successful.length + " personas ingresaron correctamente.";
+
+    show("success-box");
+    hide("result-card");
+
+    if (failed.length){
+      console.warn("No se registraron:", failed);
+    }
+
+    resetTimer = setTimeout(resetForNextSearch, 1800);
+  });
+
+  refreshGlobalCount();
+
+  if (window.lucide){
+    window.lucide.createIcons();
+  }
+
+  $("invitation-search").focus();
+})();
+</script>
+
+<!--
+  © 2026 FM.
+  Control de acceso desarrollado para este evento con asistencia de herramientas
+  de inteligencia artificial. La base de invitados se mantiene en Supabase y
+  este formulario únicamente consulta la invitación solicitada y registra ingresos.
+-->
+</body>
+</html>
