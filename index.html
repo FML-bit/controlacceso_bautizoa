@@ -363,6 +363,53 @@
       font-size:12px;
     }
 
+    .counter-breakdown{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:16px;
+      padding-top:15px;
+      border-top:1px solid var(--line);
+    }
+
+    .counter-breakdown div{
+      padding:8px 10px;
+      border-radius:10px;
+      background:#fbfcfd;
+    }
+
+    .counter-breakdown b{
+      display:block;
+      color:var(--navy);
+      font-size:18px;
+    }
+
+    .counter-breakdown em{
+      display:block;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:10px;
+      font-style:normal;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .child-tag{
+      display:inline-flex;
+      align-items:center;
+      padding:3px 7px;
+      border-radius:999px;
+      color:#7a5c24;
+      background:#fff6df;
+      border:1px solid #ead6a7;
+      font-size:9px;
+      font-weight:700;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
     footer{
       padding:22px 0 0;
       text-align:center;
@@ -470,13 +517,22 @@
         <span>Ingresos registrados</span>
         <strong id="global-count">0</strong>
         <small>personas</small>
+
+        <div class="counter-breakdown">
+          <div>
+            <b id="adult-count">0</b>
+            <em>Adultos</em>
+          </div>
+          <div>
+            <b id="child-count">0</b>
+            <em>Niños</em>
+          </div>
+        </div>
       </aside>
 
       <footer>
         Uso exclusivo para el control de acceso del evento.<br>
-        © 2026 FM · Todos los derechos reservados. <br>
-        Prohibida su reproducción, distribución o uso no autorizado, total o parcial,<br>
-        sin la autorización previa y por escrito del titular.                                                 
+        © 2026 FM · Todos los derechos reservados.
       </footer>
 
     </div>
@@ -550,6 +606,15 @@
     return (record.ingresos || []).map(item => item.nombre_integrante);
   }
 
+  function getChildNames(record){
+    return Array.isArray(record && record.ninos) ? record.ninos : [];
+  }
+
+  function isChild(record, name){
+    const target = normalize(name);
+    return getChildNames(record).some(child => normalize(child) === target);
+  }
+
   function isEntered(enteredNames, name){
     const target = normalize(name);
     return enteredNames.some(item => normalize(item) === target);
@@ -561,16 +626,18 @@
   }
 
   async function refreshGlobalCount(){
-    const { count, error } = await db
-      .from("ingresos")
-      .select("id", { count:"exact", head:true });
+    const { data, error } = await db.rpc("resumen_ingresos_control");
 
     if (error){
       console.error("No se pudo actualizar el contador:", error);
       return;
     }
 
-    $("global-count").textContent = count || 0;
+    const summary = Array.isArray(data) && data.length ? data[0] : null;
+
+    $("global-count").textContent = summary ? Number(summary.total_ingresos || 0) : 0;
+    $("adult-count").textContent = summary ? Number(summary.adultos_ingresados || 0) : 0;
+    $("child-count").textContent = summary ? Number(summary.ninos_ingresados || 0) : 0;
   }
 
   async function searchInvitation(number){
@@ -629,14 +696,18 @@
 
     members.forEach(name => {
       const entered = isEntered(enteredNames, name);
+      const child = isChild(record, name);
 
       const label = document.createElement("label");
       label.className = "member " + (entered ? "entered" : "pending");
+
+      const childTag = child ? '<span class="child-tag">Niño</span>' : "";
 
       if (entered){
         label.innerHTML = [
           '<i data-lucide="circle-check" style="width:18px;height:18px;color:#2f6f4e"></i>',
           '<span class="member-name">' + escapeHtml(name) + '</span>',
+          childTag,
           '<span class="badge entered">Ingresó</span>'
         ].join("");
       } else {
@@ -644,6 +715,7 @@
         label.innerHTML = [
           '<input class="member-check" type="checkbox" value="' + escapeHtml(name) + '">',
           '<span class="member-name">' + escapeHtml(name) + '</span>',
+          childTag,
           '<span class="badge pending">Pendiente</span>'
         ].join("");
       }
@@ -765,7 +837,18 @@
   © 2026 FM.
   Control de acceso desarrollado para este evento con asistencia de herramientas
   de inteligencia artificial. La base de invitados se mantiene en Supabase y
-  este formulario únicamente consulta la invitación solicitada y registra ingresos.
+  este formulario únicamente consulta la invitación solicitada, distingue internamente adultos/niños y registra ingresos.
+
+  <!-- 
+  © 2026 FM. 
+  Concepto, estructura y desarrollo adaptados para este evento con asistencia de herramientas de inteligencia artificial.
+
+  Las bibliotecas, tipografías, personajes y demás recursos de terceros pertenecen a sus respectivos titulares y se utilizan conforme
+  a sus respectivas licencias y/o derechos aplicables.
+  
+-->
+  
+-->
 -->
 </body>
 </html>
