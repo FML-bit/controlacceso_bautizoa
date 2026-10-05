@@ -189,11 +189,11 @@
     }
 
     .metrics{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-top:17px;
-    }
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:17px;
+}
 
     .metric{
       padding:11px 12px;
@@ -425,7 +425,7 @@
       .search-card{padding:19px}
       .search-row{grid-template-columns:1fr}
       .primary{width:100%}
-      .metrics{grid-template-columns:1fr 1fr 1fr}
+      .metrics{grid-template-columns:1fr 1fr}
       .metric{padding:9px}
       .metric strong{font-size:19px}
       .members{padding:19px}
@@ -469,21 +469,27 @@
           <p id="result-number" class="result-eyebrow"></p>
           <h2 id="result-family"></h2>
 
-          <div class="metrics">
-            <div class="metric">
-              <span>Asignados</span>
-              <strong id="assigned-count">0</strong>
-            </div>
-            <div class="metric">
-              <span>Ingresaron</span>
-              <strong id="entered-count">0</strong>
-            </div>
-            <div class="metric">
-              <span>Pendientes</span>
-              <strong id="pending-count">0</strong>
-            </div>
-          </div>
-        </div>
+         <div class="metrics">
+  <div class="metric">
+    <span>Mesa</span>
+    <strong id="table-number">—</strong>
+  </div>
+
+  <div class="metric">
+    <span>Asignados</span>
+    <strong id="assigned-count">0</strong>
+  </div>
+
+  <div class="metric">
+    <span>Ingresaron</span>
+    <strong id="entered-count">0</strong>
+  </div>
+
+  <div class="metric">
+    <span>Pendientes</span>
+    <strong id="pending-count">0</strong>
+  </div>
+</div>
 
         <div class="members">
           <p class="members-title">Selecciona a las personas que están ingresando:</p>
@@ -684,10 +690,17 @@
     const pendingCount = Math.max(0, assigned - enteredCount);
 
     $("result-number").textContent = "INVITACIÓN " + record.numero_invitacion;
-    $("result-family").textContent = displayFamily(record);
-    $("assigned-count").textContent = assigned;
-    $("entered-count").textContent = enteredCount;
-    $("pending-count").textContent = pendingCount;
+$("result-family").textContent = displayFamily(record);
+
+const mesa = record.mesa_asignada ?? record.mesa ?? record.numero_mesa ?? "";
+
+$("table-number").textContent = mesa
+  ? mesa
+  : "Por asignar";
+
+$("assigned-count").textContent = assigned;
+$("entered-count").textContent = enteredCount;
+$("pending-count").textContent = pendingCount;
 
     const list = $("member-list");
     list.replaceChildren();
@@ -738,9 +751,34 @@
   }
 
   $("search-form").addEventListener("submit", event => {
-    event.preventDefault();
-    searchInvitation($("invitation-search").value);
-  });
+  event.preventDefault();
+  searchInvitation($("invitation-search").value);
+});
+
+let searchTypingTimer = null;
+
+$("invitation-search").addEventListener("input", () => {
+  clearTimeout(searchTypingTimer);
+
+  const value = $("invitation-search").value.trim();
+
+  // Si borraron el número, limpiamos el resultado
+  if (!value) {
+    currentInvitation = null;
+    hide("result-card");
+    hide("success-box");
+    clearSelectionError();
+    setSearchStatus("");
+    return;
+  }
+
+  setSearchStatus("Buscando…");
+
+  // Espera un momento para que terminen de escribir
+  searchTypingTimer = setTimeout(() => {
+    searchInvitation(value);
+  }, 450);
+});
 
   $("select-all").addEventListener("change", () => {
     document.querySelectorAll(".member-check").forEach(input => {
