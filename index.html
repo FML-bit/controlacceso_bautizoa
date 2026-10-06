@@ -14,293 +14,637 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --navy:#0b2447;
-      --navy-2:#173b67;
-      --gold:#b89452;
-      --text:#1f2937;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --soft:#f8fafc;
-      --success:#2f6f4e;
-      --success-soft:#eef7f1;
-      --danger:#9f3a38;
-      --danger-soft:#fff4f3;
+      --navy:#173b67;
+      --navy-dark:#12345d;
+      --blue:#5d84b1;
+      --blue-soft:#edf4fb;
+      --blue-soft-2:#f5f9fd;
+      --blue-line:#d7e3ef;
+
+      --text:#203b5c;
+      --muted:#72849a;
+
+      --line:#dce6ef;
       --white:#ffffff;
+
+      --success:#2d8a60;
+      --success-soft:#eaf7f0;
+
+      --pending:#25875c;
+      --pending-soft:#e8f6ef;
+
+      --danger:#a34440;
+      --danger-soft:#fff3f2;
+
+      --shadow:0 10px 30px rgba(31,73,111,.09);
     }
 
-    *{box-sizing:border-box}
-    html,body{margin:0;width:100%;min-height:100%;background:#f7f8fa;color:var(--text)}
-    body{font-family:"DM Sans",sans-serif}
-    button,input{font:inherit}
-    button{cursor:pointer}
-    button:disabled{cursor:not-allowed;opacity:.55}
-    .hidden{display:none!important}
+    *{
+      box-sizing:border-box;
+    }
+
+    html,
+    body{
+      margin:0;
+      width:100%;
+      min-height:100%;
+      background:#f3f8fc;
+      color:var(--text);
+    }
+
+    body{
+      font-family:"DM Sans",sans-serif;
+    }
+
+    button,
+    input{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    button:disabled{
+      cursor:not-allowed;
+      opacity:.55;
+    }
+
+    .hidden{
+      display:none!important;
+    }
+
+    /* =========================================================
+       CONTENEDOR GENERAL
+       ========================================================= */
 
     .page{
       width:100%;
       min-height:100vh;
       display:flex;
       justify-content:center;
-      padding:28px 16px 40px;
+      padding:26px 18px 45px;
     }
 
     .shell{
       width:100%;
-      max-width:720px;
+      max-width:1080px;
     }
 
-    .brand{
-      text-align:center;
-      padding:10px 0 26px;
+    /* =========================================================
+       DECORACIÓN DE HOJAS
+       ========================================================= */
+
+    .decorated{
+      position:relative;
+      overflow:hidden;
     }
 
-    .brand-cross{
-      color:var(--gold);
-      font-family:"Cormorant Garamond",serif;
-      font-size:31px;
-      line-height:1;
-      margin-bottom:7px;
+    .leaf-decoration{
+      position:absolute;
+      top:14px;
+      right:16px;
+      width:90px;
+      height:85px;
+      pointer-events:none;
+      opacity:.45;
     }
 
-    .brand h1{
-      margin:0;
-      color:var(--navy);
-      font-family:"Cormorant Garamond",serif;
-      font-size:35px;
-      font-weight:600;
-      letter-spacing:.055em;
-      line-height:1.05;
-      text-transform:uppercase;
+    .leaf-decoration i{
+      position:absolute;
+      color:#9bb6cf;
     }
 
-    .brand p{
-      margin:8px 0 0;
-      color:var(--gold);
-      font-size:11px;
-      font-weight:700;
-      letter-spacing:.22em;
-      text-transform:uppercase;
+    .leaf-1{
+      top:5px;
+      right:4px;
+      transform:rotate(30deg);
     }
 
-    .brand-rule{
-      width:54px;
-      height:1px;
-      margin:17px auto 0;
-      background:var(--gold);
-      opacity:.7;
+    .leaf-2{
+      top:28px;
+      right:31px;
+      transform:rotate(-25deg);
     }
+
+    .leaf-3{
+      top:48px;
+      right:3px;
+      transform:rotate(48deg);
+    }
+
+    /* =========================================================
+       TARJETAS
+       ========================================================= */
 
     .card{
       background:var(--white);
-      border:1px solid var(--line);
-      border-radius:16px;
-      box-shadow:0 10px 28px rgba(11,36,71,.055);
+      border:1px solid var(--blue-line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
     }
 
+    /* =========================================================
+       BUSCADOR
+       ========================================================= */
+
     .search-card{
-      padding:24px;
+      padding:25px 28px 28px;
+      background:#ffffff;
+    }
+
+    .search-label-row{
+      display:flex;
+      align-items:center;
+      gap:13px;
+      margin-bottom:12px;
+    }
+
+    .search-icon-box{
+      width:45px;
+      height:45px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:none;
+
+      color:var(--navy);
+      background:#e7f0f9;
+      border-radius:13px;
+    }
+
+    .search-icon-box svg{
+      width:24px;
+      height:24px;
+      stroke-width:2;
     }
 
     .label{
       display:block;
-      margin-bottom:9px;
+      margin:0;
       color:var(--navy);
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .search-row{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:10px;
-    }
-
-    .search-row input{
-      width:100%;
-      min-height:52px;
-      padding:13px 15px;
-      color:var(--navy);
-      background:#fff;
-      border:1px solid #d4d8de;
-      border-radius:10px;
-      outline:none;
       font-size:18px;
       font-weight:600;
     }
 
+    .search-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 320px;
+      gap:15px;
+    }
+
+    .search-input-wrap{
+      position:relative;
+    }
+
+    .search-row input{
+      width:100%;
+      height:66px;
+      padding:0 48px 0 22px;
+
+      color:var(--navy);
+      background:#fff;
+
+      border:2px solid #c9d8e7;
+      border-radius:17px;
+
+      outline:none;
+
+      font-size:21px;
+      font-weight:500;
+
+      transition:.2s ease;
+    }
+
     .search-row input:focus{
-      border-color:var(--gold);
-      box-shadow:0 0 0 3px rgba(184,148,82,.12);
+      border-color:#6e94bb;
+      box-shadow:0 0 0 4px rgba(93,132,177,.10);
+    }
+
+    .search-clear{
+      position:absolute;
+      top:50%;
+      right:16px;
+
+      width:30px;
+      height:30px;
+
+      transform:translateY(-50%);
+
+      border:0;
+      background:transparent;
+      color:#74869a;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .search-clear svg{
+      width:21px;
+      height:21px;
     }
 
     .primary{
-      min-height:52px;
-      padding:0 20px;
+      min-height:66px;
+      padding:0 22px;
+
       border:0;
-      border-radius:10px;
+      border-radius:17px;
+
       background:var(--navy);
       color:#fff;
-      font-size:13px;
+
+      font-size:16px;
       font-weight:700;
-      letter-spacing:.04em;
+
+      letter-spacing:.02em;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+
+      transition:.2s ease;
     }
 
-    .primary:hover:not(:disabled){background:var(--navy-2)}
+    .primary svg{
+      width:24px;
+      height:24px;
+      stroke-width:2.4;
+    }
+
+    .primary:hover:not(:disabled){
+      background:var(--navy-dark);
+      transform:translateY(-1px);
+    }
 
     .search-status{
       min-height:18px;
-      margin-top:11px;
+      margin-top:9px;
+
       color:var(--muted);
       font-size:12px;
     }
 
-    .search-status.error{color:var(--danger)}
+    .search-status.error{
+      color:var(--danger);
+    }
+
+    /* =========================================================
+       RESULTADO DE INVITACIÓN
+       ========================================================= */
 
     .result-card{
-      margin-top:18px;
-      overflow:hidden;
+      margin-top:22px;
     }
 
     .result-head{
-      padding:22px 24px;
-      border-bottom:1px solid var(--line);
-      background:#fbfcfd;
+      position:relative;
+      padding:27px 34px 25px;
+
+      background:#edf4fb;
+      border-bottom:1px solid var(--blue-line);
     }
 
-    .result-eyebrow{
+    .result-number{
       margin:0;
-      color:var(--gold);
-      font-size:11px;
+
+      color:#315a84;
+
+      font-size:16px;
       font-weight:700;
-      letter-spacing:.15em;
+
+      letter-spacing:.08em;
       text-transform:uppercase;
     }
 
-    .result-head h2{
+    .result-family{
       margin:5px 0 0;
+
       color:var(--navy);
-      font-family:"Cormorant Garamond",serif;
-      font-size:28px;
+
+      font-size:25px;
       font-weight:600;
     }
 
-    .metrics{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-top:17px;
-}
+    .result-main{
+      margin-top:20px;
 
-    .metric{
-      padding:11px 12px;
-      border:1px solid var(--line);
-      border-radius:10px;
-      background:#fff;
+      display:grid;
+      grid-template-columns:minmax(260px,1fr) minmax(450px,1.25fr);
+      gap:25px;
+
+      align-items:center;
     }
 
-    .metric span{
-      display:block;
-      color:var(--muted);
-      font-size:10px;
-      font-weight:700;
-      letter-spacing:.06em;
+    /* =========================================================
+       MESA
+       ========================================================= */
+
+    .table-area{
+      display:flex;
+      align-items:center;
+      gap:17px;
+    }
+
+    .table-icon{
+      width:75px;
+      height:75px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      color:var(--navy);
+      background:transparent;
+    }
+
+    .table-icon svg{
+      width:68px;
+      height:68px;
+      stroke-width:1.7;
+    }
+
+    .table-label{
+      margin:0;
+
+      color:#315a84;
+
+      font-size:17px;
+      font-weight:600;
+
+      letter-spacing:.05em;
       text-transform:uppercase;
     }
 
-    .metric strong{
-      display:block;
-      margin-top:3px;
-      color:var(--navy);
-      font-size:21px;
-    }
+    .table-number{
+      margin:0;
 
-    .members{
-      padding:22px 24px 24px;
-    }
-
-    .members-title{
-      margin:0 0 12px;
       color:var(--navy);
-      font-size:13px;
+
+      font-size:58px;
+      line-height:.95;
       font-weight:700;
     }
 
-    .select-all{
-      display:inline-flex;
+    .table-number.unassigned{
+      font-size:27px;
+    }
+
+    /* =========================================================
+       MÉTRICAS
+       ========================================================= */
+
+    .metrics{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:0;
+
+      background:#ffffff;
+      border-radius:18px;
+
+      overflow:hidden;
+
+      box-shadow:0 5px 18px rgba(32,68,101,.055);
+    }
+
+    .metric{
+      min-height:94px;
+      padding:15px 18px;
+
+      display:grid;
+      grid-template-columns:35px 1fr;
+      grid-template-rows:auto auto;
+
       align-items:center;
-      gap:7px;
-      margin-bottom:9px;
-      padding:5px 8px;
-      color:var(--muted);
-      font-size:11px;
+
+      border-right:1px solid var(--blue-line);
+    }
+
+    .metric:last-child{
+      border-right:0;
+    }
+
+    .metric-icon{
+      grid-row:1 / span 2;
+
+      width:31px;
+      height:31px;
+
+      color:#315a84;
+    }
+
+    .metric-icon svg{
+      width:29px;
+      height:29px;
+      stroke-width:1.8;
+    }
+
+    .metric span{
+      color:#72849a;
+
+      font-size:12px;
+      font-weight:600;
+
+      line-height:1.1;
+    }
+
+    .metric strong{
+      margin-top:2px;
+
+      color:var(--navy);
+
+      font-size:27px;
+      line-height:1;
+      font-weight:700;
+    }
+
+    /* =========================================================
+       PERSONAS
+       ========================================================= */
+
+    .members{
+      padding:26px 34px 32px;
+    }
+
+    .members-title{
+      margin:0 0 14px;
+
+      color:var(--navy);
+
+      font-size:18px;
+      font-weight:600;
+    }
+
+    .select-all{
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      width:max-content;
+
+      margin-bottom:12px;
+      padding:4px 8px;
+
+      color:#65788e;
+
+      font-size:14px;
+      font-weight:500;
+
       cursor:pointer;
+    }
+
+    .select-all input{
+      width:20px;
+      height:20px;
+
+      accent-color:var(--navy);
     }
 
     .member-list{
       display:grid;
-      gap:8px;
+      gap:11px;
     }
 
     .member{
+      min-height:67px;
+
       display:flex;
       align-items:center;
-      gap:10px;
-      min-height:51px;
-      padding:11px 12px;
-      border:1px solid var(--line);
-      border-radius:10px;
+      gap:14px;
+
+      padding:10px 16px;
+
+      border:1px solid #d9e4ee;
+      border-radius:16px;
+
       background:#fff;
+
+      transition:.18s ease;
     }
 
-    .member.pending{cursor:pointer}
-    .member.pending:hover{border-color:#d1b77f}
+    .member.pending{
+      cursor:pointer;
+    }
+
+    .member.pending:hover{
+      border-color:#a8c1d9;
+      box-shadow:0 4px 14px rgba(32,68,101,.06);
+    }
+
     .member.entered{
-      background:var(--success-soft);
-      border-color:#cfe4d6;
+      background:#f0f8f4;
+      border-color:#cae5d7;
     }
 
     .member input{
-      width:17px;
-      height:17px;
-      accent-color:var(--gold);
+      width:22px;
+      height:22px;
+
+      accent-color:var(--navy);
+
+      flex:none;
+    }
+
+    .member-person-icon{
+      width:42px;
+      height:42px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      flex:none;
+
+      color:#6685a5;
+      background:#eaf1f8;
+
+      border-radius:50%;
+    }
+
+    .member-person-icon svg{
+      width:23px;
+      height:23px;
+      stroke-width:1.8;
     }
 
     .member-name{
       flex:1;
+
       color:var(--navy);
-      font-size:14px;
+
+      font-size:16px;
       font-weight:600;
     }
 
     .badge{
       flex:none;
-      padding:4px 8px;
+
+      padding:8px 13px;
+
       border-radius:999px;
-      font-size:9px;
+
+      font-size:11px;
       font-weight:700;
-      letter-spacing:.05em;
-      text-transform:uppercase;
     }
 
-    .badge.entered{color:var(--success);background:#dfeee4}
-    .badge.pending{color:#6b7280;background:#f1f3f5}
+    .badge.entered{
+      color:#247d53;
+      background:#dcefe5;
+    }
+
+    .badge.pending{
+      color:#247d53;
+      background:#e3f4eb;
+    }
+
+    .child-tag{
+      display:inline-flex;
+      align-items:center;
+
+      padding:5px 9px;
+
+      border-radius:999px;
+
+      color:#6f5928;
+      background:#fff5d9;
+      border:1px solid #ead7a3;
+
+      font-size:10px;
+      font-weight:700;
+
+      letter-spacing:.03em;
+      text-transform:uppercase;
+
+      white-space:nowrap;
+    }
 
     .register{
       width:100%;
-      margin-top:17px;
+      margin-top:18px;
     }
+
+    /* =========================================================
+       AVISO DE INGRESO
+       ========================================================= */
 
     .notice{
       margin-top:18px;
+
       padding:18px 20px;
-      border-radius:14px;
+
+      border-radius:17px;
       border:1px solid #cfe4d6;
+
       background:var(--success-soft);
       color:var(--success);
+
       box-shadow:0 8px 22px rgba(47,111,78,.06);
     }
 
@@ -308,6 +652,12 @@
       display:flex;
       gap:11px;
       align-items:flex-start;
+    }
+
+    .notice-row svg{
+      width:24px;
+      height:24px;
+      flex:none;
     }
 
     .notice h3{
@@ -324,130 +674,414 @@
     .error-box{
       margin-top:14px;
       padding:12px 14px;
+
       color:var(--danger);
       background:var(--danger-soft);
+
       border:1px solid #efcbc7;
-      border-radius:10px;
+      border-radius:12px;
+
       font-size:12px;
     }
 
+    /* =========================================================
+       CONTADOR GLOBAL
+       ========================================================= */
+
     .counter{
-      margin-top:18px;
-      padding:22px 24px;
+      position:relative;
+
+      margin-top:22px;
+      padding:25px 34px 28px;
+
       text-align:center;
+
+      overflow:hidden;
     }
 
-    .counter span{
-      display:block;
-      color:var(--muted);
-      font-size:10px;
+    .counter-title{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:11px;
+
+      color:#315a84;
+
+      font-size:15px;
       font-weight:700;
-      letter-spacing:.13em;
+
+      letter-spacing:.14em;
       text-transform:uppercase;
     }
 
-    .counter strong{
+    .counter-title svg{
+      width:30px;
+      height:30px;
+      stroke-width:1.8;
+    }
+
+    .counter-number{
       display:block;
-      margin-top:3px;
+
+      margin-top:14px;
+
       color:var(--navy);
-      font-family:"Cormorant Garamond",serif;
-      font-size:48px;
-      font-weight:600;
+
+      font-size:54px;
       line-height:1;
+      font-weight:700;
     }
 
     .counter small{
       display:block;
-      margin-top:3px;
-      color:var(--muted);
-      font-size:12px;
+
+      margin-top:2px;
+
+      color:#72849a;
+
+      font-size:16px;
     }
 
     .counter-breakdown{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:16px;
-      padding-top:15px;
-      border-top:1px solid var(--line);
+
+      margin-top:20px;
+      padding-top:18px;
+
+      border-top:1px solid var(--blue-line);
     }
 
     .counter-breakdown div{
-      padding:8px 10px;
-      border-radius:10px;
-      background:#fbfcfd;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:13px;
+
+      min-height:57px;
+    }
+
+    .counter-breakdown div:first-child{
+      border-right:1px solid var(--blue-line);
+    }
+
+    .counter-person-icon{
+      width:35px;
+      height:35px;
+
+      color:#6685a5;
+    }
+
+    .counter-person-icon svg{
+      width:35px;
+      height:35px;
+      stroke-width:1.7;
+    }
+
+    .counter-info{
+      text-align:left;
     }
 
     .counter-breakdown b{
       display:block;
+
       color:var(--navy);
-      font-size:18px;
+
+      font-size:24px;
+      line-height:1;
     }
 
     .counter-breakdown em{
       display:block;
-      margin-top:2px;
-      color:var(--muted);
-      font-size:10px;
+
+      margin-top:4px;
+
+      color:#72849a;
+
+      font-size:11px;
       font-style:normal;
       font-weight:700;
+
       letter-spacing:.08em;
       text-transform:uppercase;
     }
 
-    .child-tag{
-      display:inline-flex;
-      align-items:center;
-      padding:3px 7px;
-      border-radius:999px;
-      color:#7a5c24;
-      background:#fff6df;
-      border:1px solid #ead6a7;
-      font-size:9px;
-      font-weight:700;
-      letter-spacing:.04em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
+    /* =========================================================
+       FOOTER
+       ========================================================= */
 
     footer{
       padding:22px 0 0;
+
       text-align:center;
-      color:#9297a0;
+
+      color:#91a0af;
+
       font-size:10px;
       line-height:1.5;
     }
 
+    /* =========================================================
+       TABLET
+       ========================================================= */
+
+    @media(max-width:850px){
+
+      .result-main{
+        grid-template-columns:1fr;
+        gap:18px;
+      }
+
+      .table-area{
+        justify-content:center;
+      }
+
+      .search-row{
+        grid-template-columns:1fr 260px;
+      }
+    }
+
+    /* =========================================================
+       MÓVIL
+       ========================================================= */
+
     @media(max-width:620px){
-      .page{padding:20px 12px 30px}
-      .brand{padding-bottom:21px}
-      .brand h1{font-size:31px}
-      .search-card{padding:19px}
-      .search-row{grid-template-columns:1fr}
-      .primary{width:100%}
-      .metrics{grid-template-columns:1fr 1fr}
-      .metric{padding:9px}
-      .metric strong{font-size:19px}
-      .members{padding:19px}
-      .result-head{padding:19px}
+
+      .page{
+        padding:15px 10px 30px;
+      }
+
+      .search-card{
+        padding:19px;
+        border-radius:18px;
+      }
+
+      .search-label-row{
+        gap:10px;
+      }
+
+      .search-icon-box{
+        width:40px;
+        height:40px;
+      }
+
+      .label{
+        font-size:15px;
+      }
+
+      .search-row{
+        grid-template-columns:1fr;
+        gap:10px;
+      }
+
+      .search-row input{
+        height:57px;
+        font-size:18px;
+        border-radius:14px;
+      }
+
+      .primary{
+        min-height:57px;
+        border-radius:14px;
+        font-size:14px;
+      }
+
+      .result-card{
+        border-radius:18px;
+      }
+
+      .result-head{
+        padding:21px 18px 20px;
+      }
+
+      .result-number{
+        font-size:13px;
+      }
+
+      .result-family{
+        font-size:21px;
+      }
+
+      .result-main{
+        margin-top:18px;
+      }
+
+      .table-area{
+        justify-content:flex-start;
+      }
+
+      .table-icon{
+        width:59px;
+        height:59px;
+      }
+
+      .table-icon svg{
+        width:55px;
+        height:55px;
+      }
+
+      .table-label{
+        font-size:13px;
+      }
+
+      .table-number{
+        font-size:45px;
+      }
+
+      .table-number.unassigned{
+        font-size:23px;
+      }
+
+      .metrics{
+        grid-template-columns:repeat(3,1fr);
+        border-radius:14px;
+      }
+
+      .metric{
+        min-height:82px;
+        padding:11px 8px;
+
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+
+        text-align:center;
+        gap:4px;
+      }
+
+      .metric-icon{
+        width:25px;
+        height:25px;
+      }
+
+      .metric-icon svg{
+        width:23px;
+        height:23px;
+      }
+
+      .metric span{
+        font-size:9px;
+      }
+
+      .metric strong{
+        font-size:22px;
+      }
+
+      .members{
+        padding:21px 18px 23px;
+      }
+
+      .members-title{
+        font-size:15px;
+      }
+
+      .member{
+        min-height:61px;
+        padding:9px 10px;
+        gap:9px;
+      }
+
+      .member-person-icon{
+        width:37px;
+        height:37px;
+      }
+
+      .member-person-icon svg{
+        width:20px;
+        height:20px;
+      }
+
+      .member-name{
+        font-size:14px;
+      }
+
+      .badge{
+        padding:6px 9px;
+        font-size:9px;
+      }
+
+      .child-tag{
+        display:none;
+      }
+
+      .counter{
+        padding:21px 18px 23px;
+        border-radius:18px;
+      }
+
+      .counter-title{
+        font-size:12px;
+      }
+
+      .counter-number{
+        font-size:47px;
+      }
+
+      .counter-breakdown div{
+        gap:8px;
+      }
+
+      .counter-breakdown b{
+        font-size:21px;
+      }
+    }
+
+    @media(max-width:390px){
+
+      .metric span{
+        font-size:8px;
+      }
+
+      .metric strong{
+        font-size:20px;
+      }
+
+      .member-name{
+        font-size:13px;
+      }
+
+      .badge{
+        padding:5px 7px;
+        font-size:8px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <main class="page">
-    <div class="shell">
 
-      <header class="brand">
-        <div class="brand-cross">✝</div>
-        <h1>Aldo Yosef</h1>
-        <p>Control de acceso</p>
-        <div class="brand-rule"></div>
-      </header>
+<main class="page">
+  <div class="shell">
 
-      <section class="card search-card" aria-label="Buscar invitación">
-        <label for="invitation-search" class="label">Ingresa número de invitación:</label>
-        <form id="search-form" class="search-row">
+    <!-- =====================================================
+         BUSCADOR
+         ===================================================== -->
+
+    <section class="card search-card decorated" aria-label="Buscar invitación">
+
+      <div class="leaf-decoration" aria-hidden="true">
+        <i class="leaf-1" data-lucide="leaf"></i>
+        <i class="leaf-2" data-lucide="leaf"></i>
+        <i class="leaf-3" data-lucide="leaf"></i>
+      </div>
+
+      <div class="search-label-row">
+
+        <div class="search-icon-box">
+          <i data-lucide="briefcase-business"></i>
+        </div>
+
+        <label for="invitation-search" class="label">
+          Ingresa número de invitación:
+        </label>
+
+      </div>
+
+      <form id="search-form" class="search-row">
+
+        <div class="search-input-wrap">
+
           <input
             id="invitation-search"
             type="search"
@@ -457,92 +1091,286 @@
             placeholder="Ej. 25"
             aria-label="Número de invitación"
           >
-          <button id="search-button" type="submit" class="primary">
-            BUSCAR INVITACIÓN
+
+          <button
+            id="clear-search"
+            type="button"
+            class="search-clear"
+            aria-label="Limpiar búsqueda"
+          >
+            <i data-lucide="x"></i>
           </button>
-        </form>
-        <div id="search-status" class="search-status" role="status" aria-live="polite"></div>
-      </section>
 
-      <section id="result-card" class="card result-card hidden" aria-live="polite">
-        <div class="result-head">
-          <p id="result-number" class="result-eyebrow"></p>
-          <h2 id="result-family"></h2>
-
-         <div class="metrics">
-  <div class="metric">
-    <span>Mesa</span>
-    <strong id="table-number">—</strong>
-  </div>
-
-  <div class="metric">
-    <span>Asignados</span>
-    <strong id="assigned-count">0</strong>
-  </div>
-
-  <div class="metric">
-    <span>Ingresaron</span>
-    <strong id="entered-count">0</strong>
-  </div>
-
-  <div class="metric">
-    <span>Pendientes</span>
-    <strong id="pending-count">0</strong>
-  </div>
-</div>
-
-        <div class="members">
-          <p class="members-title">Selecciona a las personas que están ingresando:</p>
-
-          <label id="select-all-wrap" class="select-all hidden">
-            <input id="select-all" type="checkbox">
-            Seleccionar todos los pendientes
-          </label>
-
-          <div id="member-list" class="member-list"></div>
-
-          <div id="selection-error" class="error-box hidden"></div>
-
-          <button id="register-button" type="button" class="primary register">
-            REGISTRAR INGRESO
-          </button>
         </div>
-      </section>
 
-      <section id="success-box" class="notice hidden" aria-live="polite">
-        <div class="notice-row">
-          <i data-lucide="circle-check"></i>
-          <div>
-            <h3>Ingreso registrado</h3>
-            <p id="success-text"></p>
+        <button
+          id="search-button"
+          type="submit"
+          class="primary"
+        >
+          <i data-lucide="search"></i>
+          <span>BUSCAR INVITACIÓN</span>
+        </button>
+
+      </form>
+
+      <div
+        id="search-status"
+        class="search-status"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESULTADO DE INVITACIÓN
+         ===================================================== -->
+
+    <section
+      id="result-card"
+      class="card result-card hidden"
+      aria-live="polite"
+    >
+
+      <div class="result-head decorated">
+
+        <div class="leaf-decoration" aria-hidden="true">
+          <i class="leaf-1" data-lucide="leaf"></i>
+          <i class="leaf-2" data-lucide="leaf"></i>
+          <i class="leaf-3" data-lucide="leaf"></i>
+        </div>
+
+        <p id="result-number" class="result-number"></p>
+
+        <!-- AQUÍ APARECE EL NOMBRE DE LA FAMILIA -->
+        <h2 id="result-family" class="result-family"></h2>
+
+
+        <div class="result-main">
+
+          <!-- MESA -->
+
+          <div class="table-area">
+
+            <div class="table-icon">
+              <i data-lucide="table-2"></i>
+            </div>
+
+            <div>
+              <p class="table-label">Mesa</p>
+
+              <p
+                id="table-number"
+                class="table-number"
+              >
+                —
+              </p>
+            </div>
+
           </div>
+
+
+          <!-- MÉTRICAS -->
+
+          <div class="metrics">
+
+            <div class="metric">
+
+              <div class="metric-icon">
+                <i data-lucide="ticket"></i>
+              </div>
+
+              <span>Boletos</span>
+              <strong id="assigned-count">0</strong>
+
+            </div>
+
+
+            <div class="metric">
+
+              <div class="metric-icon">
+                <i data-lucide="user-round-check"></i>
+              </div>
+
+              <span>Ingresaron</span>
+              <strong id="entered-count">0</strong>
+
+            </div>
+
+
+            <div class="metric">
+
+              <div class="metric-icon">
+                <i data-lucide="clock-3"></i>
+              </div>
+
+              <span>Pendientes</span>
+              <strong id="pending-count">0</strong>
+
+            </div>
+
+          </div>
+
         </div>
-      </section>
 
-      <aside class="card counter" aria-label="Contador de ingresos">
+      </div>
+
+
+      <!-- ===================================================
+           PERSONAS
+           =================================================== -->
+
+      <div class="members">
+
+        <p class="members-title">
+          Selecciona a las personas que están ingresando:
+        </p>
+
+
+        <label
+          id="select-all-wrap"
+          class="select-all hidden"
+        >
+
+          <input
+            id="select-all"
+            type="checkbox"
+          >
+
+          Seleccionar todos los pendientes
+
+        </label>
+
+
+        <div
+          id="member-list"
+          class="member-list"
+        ></div>
+
+
+        <div
+          id="selection-error"
+          class="error-box hidden"
+        ></div>
+
+
+        <button
+          id="register-button"
+          type="button"
+          class="primary register"
+        >
+          <i data-lucide="user-round-plus"></i>
+          <span>REGISTRAR INGRESO</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         AVISO
+         ===================================================== -->
+
+    <section
+      id="success-box"
+      class="notice hidden"
+      aria-live="polite"
+    >
+
+      <div class="notice-row">
+
+        <i data-lucide="circle-check"></i>
+
+        <div>
+
+          <h3>Ingreso registrado</h3>
+
+          <p id="success-text"></p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTADOR GLOBAL
+         ===================================================== -->
+
+    <aside
+      class="card counter decorated"
+      aria-label="Contador de ingresos"
+    >
+
+      <div class="leaf-decoration" aria-hidden="true">
+        <i class="leaf-1" data-lucide="leaf"></i>
+        <i class="leaf-2" data-lucide="leaf"></i>
+        <i class="leaf-3" data-lucide="leaf"></i>
+      </div>
+
+
+      <div class="counter-title">
+        <i data-lucide="bar-chart-3"></i>
         <span>Ingresos registrados</span>
-        <strong id="global-count">0</strong>
-        <small>personas</small>
+      </div>
 
-        <div class="counter-breakdown">
-          <div>
+
+      <strong
+        id="global-count"
+        class="counter-number"
+      >
+        0
+      </strong>
+
+      <small>personas</small>
+
+
+      <div class="counter-breakdown">
+
+        <div>
+
+          <div class="counter-person-icon">
+            <i data-lucide="user-round"></i>
+          </div>
+
+          <div class="counter-info">
             <b id="adult-count">0</b>
             <em>Adultos</em>
           </div>
-          <div>
+
+        </div>
+
+
+        <div>
+
+          <div class="counter-person-icon">
+            <i data-lucide="baby"></i>
+          </div>
+
+          <div class="counter-info">
             <b id="child-count">0</b>
             <em>Niños</em>
           </div>
+
         </div>
-      </aside>
 
-      <footer>
-        Uso exclusivo para el control de acceso del evento.<br>
-        © 2026 FM · Todos los derechos reservados.
-      </footer>
+      </div>
 
-    </div>
-  </main>
+    </aside>
+
+
+    <footer>
+      Uso exclusivo para el control de acceso del evento.<br>
+      © 2026 FM · Todos los derechos reservados.
+    </footer>
+
+  </div>
+</main>
+
 
 <script>
 (function(){
@@ -580,294 +1408,675 @@
     }[c]));
   }
 
-  function show(id){ $(id).classList.remove("hidden"); }
-  function hide(id){ $(id).classList.add("hidden"); }
+  function show(id){
+    $(id).classList.remove("hidden");
+  }
+
+  function hide(id){
+    $(id).classList.add("hidden");
+  }
 
   function setSearchStatus(text, isError=false){
     const el = $("search-status");
+
     el.textContent = text;
+
     el.classList.toggle("error", isError);
   }
 
   function clearSelectionError(){
     $("selection-error").textContent = "";
+
     hide("selection-error");
   }
 
   function resetForNextSearch(){
+
     clearTimeout(resetTimer);
+
     currentInvitation = null;
+
     $("invitation-search").value = "";
+
     $("member-list").replaceChildren();
+
     $("select-all").checked = false;
+
     hide("select-all-wrap");
     hide("result-card");
     hide("success-box");
+
     clearSelectionError();
+
     setSearchStatus("");
+
     $("invitation-search").focus();
   }
 
   function getEnteredNames(record){
-    return (record.ingresos || []).map(item => item.nombre_integrante);
+    return (record.ingresos || [])
+      .map(item => item.nombre_integrante);
   }
 
   function getChildNames(record){
-    return Array.isArray(record && record.ninos) ? record.ninos : [];
+    return Array.isArray(record && record.ninos)
+      ? record.ninos
+      : [];
   }
 
   function isChild(record, name){
+
     const target = normalize(name);
-    return getChildNames(record).some(child => normalize(child) === target);
+
+    return getChildNames(record)
+      .some(child => normalize(child) === target);
   }
 
   function isEntered(enteredNames, name){
+
     const target = normalize(name);
-    return enteredNames.some(item => normalize(item) === target);
+
+    return enteredNames.some(
+      item => normalize(item) === target
+    );
   }
 
   function displayFamily(record){
+
     const members = record.integrantes || [];
-    return record.familia || (members.length === 1 ? members[0] : "Invitación");
+
+    return record.familia ||
+      (members.length === 1 ? members[0] : "Invitación");
   }
+
 
   async function refreshGlobalCount(){
-    const { data, error } = await db.rpc("resumen_ingresos_control");
+
+    const { data, error } =
+      await db.rpc("resumen_ingresos_control");
 
     if (error){
-      console.error("No se pudo actualizar el contador:", error);
+
+      console.error(
+        "No se pudo actualizar el contador:",
+        error
+      );
+
       return;
     }
 
-    const summary = Array.isArray(data) && data.length ? data[0] : null;
+    const summary =
+      Array.isArray(data) && data.length
+        ? data[0]
+        : null;
 
-    $("global-count").textContent = summary ? Number(summary.total_ingresos || 0) : 0;
-    $("adult-count").textContent = summary ? Number(summary.adultos_ingresados || 0) : 0;
-    $("child-count").textContent = summary ? Number(summary.ninos_ingresados || 0) : 0;
+    $("global-count").textContent =
+      summary
+        ? Number(summary.total_ingresos || 0)
+        : 0;
+
+    $("adult-count").textContent =
+      summary
+        ? Number(summary.adultos_ingresados || 0)
+        : 0;
+
+    $("child-count").textContent =
+      summary
+        ? Number(summary.ninos_ingresados || 0)
+        : 0;
   }
 
+
   async function searchInvitation(number){
+
     clearTimeout(resetTimer);
+
     hide("success-box");
     hide("result-card");
+
     clearSelectionError();
+
     setSearchStatus("Buscando…");
 
-    const searched = String(number == null ? "" : number).trim();
+    const searched =
+      String(number == null ? "" : number).trim();
+
     if (!searched){
-      setSearchStatus("Ingresa un número de invitación.", true);
+
+      setSearchStatus(
+        "Ingresa un número de invitación.",
+        true
+      );
+
       return;
     }
 
-    const { data, error } = await db.rpc("buscar_invitacion_control", {
-      p_numero: searched
-    });
+    const { data, error } =
+      await db.rpc(
+        "buscar_invitacion_control",
+        {
+          p_numero: searched
+        }
+      );
 
     if (error){
+
       console.error(error);
-      setSearchStatus("No fue posible realizar la búsqueda. Inténtalo nuevamente.", true);
+
+      setSearchStatus(
+        "No fue posible realizar la búsqueda. Inténtalo nuevamente.",
+        true
+      );
+
       return;
     }
 
-    const record = Array.isArray(data) && data.length ? data[0] : null;
+    const record =
+      Array.isArray(data) && data.length
+        ? data[0]
+        : null;
 
     if (!record){
+
       currentInvitation = null;
-      setSearchStatus("Número de invitación no localizado.", true);
+
+      setSearchStatus(
+        "Número de invitación no localizado.",
+        true
+      );
+
       return;
     }
 
     currentInvitation = record;
+
     setSearchStatus("");
+
     renderInvitation(record);
   }
 
+
   function renderInvitation(record){
-    const members = Array.isArray(record.integrantes) ? record.integrantes : [];
-    const enteredNames = getEnteredNames(record);
-    const assigned = Number(record.boletos_asignados || 0);
-    const enteredCount = enteredNames.length;
-    const pendingCount = Math.max(0, assigned - enteredCount);
 
-    $("result-number").textContent = "INVITACIÓN " + record.numero_invitacion;
-$("result-family").textContent = displayFamily(record);
+    const members =
+      Array.isArray(record.integrantes)
+        ? record.integrantes
+        : [];
 
-const mesa = record.mesa_asignada ?? record.mesa ?? record.numero_mesa ?? "";
+    const enteredNames =
+      getEnteredNames(record);
 
-$("table-number").textContent = mesa
-  ? mesa
-  : "Por asignar";
+    const assigned =
+      Number(record.boletos_asignados || 0);
 
-$("assigned-count").textContent = assigned;
-$("entered-count").textContent = enteredCount;
-$("pending-count").textContent = pendingCount;
+    const enteredCount =
+      enteredNames.length;
 
-    const list = $("member-list");
+    const pendingCount =
+      Math.max(
+        0,
+        assigned - enteredCount
+      );
+
+
+    $("result-number").textContent =
+      "INVITACIÓN " + record.numero_invitacion;
+
+
+    $("result-family").textContent =
+      displayFamily(record);
+
+
+    const mesa =
+      record.mesa_asignada ??
+      record.mesa ??
+      record.numero_mesa ??
+      "";
+
+
+    const tableElement =
+      $("table-number");
+
+
+    tableElement.textContent =
+      mesa
+        ? mesa
+        : "Por asignar";
+
+
+    tableElement.classList.toggle(
+      "unassigned",
+      !mesa
+    );
+
+
+    $("assigned-count").textContent =
+      assigned;
+
+    $("entered-count").textContent =
+      enteredCount;
+
+    $("pending-count").textContent =
+      pendingCount;
+
+
+    const list =
+      $("member-list");
+
     list.replaceChildren();
+
 
     let selectableCount = 0;
 
+
     members.forEach(name => {
-      const entered = isEntered(enteredNames, name);
-      const child = isChild(record, name);
 
-      const label = document.createElement("label");
-      label.className = "member " + (entered ? "entered" : "pending");
+      const entered =
+        isEntered(
+          enteredNames,
+          name
+        );
 
-      const childTag = child ? '<span class="child-tag">Niño</span>' : "";
+      const child =
+        isChild(
+          record,
+          name
+        );
+
+
+      const label =
+        document.createElement("label");
+
+
+      label.className =
+        "member " +
+        (entered
+          ? "entered"
+          : "pending");
+
+
+      const childTag =
+        child
+          ? '<span class="child-tag">Niño</span>'
+          : "";
+
 
       if (entered){
+
         label.innerHTML = [
-          '<i data-lucide="circle-check" style="width:18px;height:18px;color:#2f6f4e"></i>',
-          '<span class="member-name">' + escapeHtml(name) + '</span>',
+
+          '<i data-lucide="circle-check" style="width:23px;height:23px;color:#2d8a60;flex:none"></i>',
+
+          '<span class="member-person-icon">',
+          '<i data-lucide="user-round"></i>',
+          '</span>',
+
+          '<span class="member-name">',
+          escapeHtml(name),
+          '</span>',
+
           childTag,
+
           '<span class="badge entered">Ingresó</span>'
+
         ].join("");
+
       } else {
+
         selectableCount++;
+
         label.innerHTML = [
-          '<input class="member-check" type="checkbox" value="' + escapeHtml(name) + '">',
-          '<span class="member-name">' + escapeHtml(name) + '</span>',
+
+          '<input class="member-check" type="checkbox" value="',
+          escapeHtml(name),
+          '">',
+
+          '<span class="member-person-icon">',
+          '<i data-lucide="user-round"></i>',
+          '</span>',
+
+          '<span class="member-name">',
+          escapeHtml(name),
+          '</span>',
+
           childTag,
+
           '<span class="badge pending">Pendiente</span>'
+
         ].join("");
       }
 
+
       list.appendChild(label);
+
     });
 
-    if (selectableCount > 1) show("select-all-wrap");
-    else hide("select-all-wrap");
+
+    if (selectableCount > 1)
+      show("select-all-wrap");
+    else
+      hide("select-all-wrap");
+
 
     $("select-all").checked = false;
-    $("register-button").disabled = selectableCount === 0;
-    $("register-button").textContent = selectableCount === 0
-      ? "TODOS LOS INGRESOS FUERON REGISTRADOS"
-      : "REGISTRAR INGRESO";
+
+
+    $("register-button").disabled =
+      selectableCount === 0;
+
+
+    $("register-button").innerHTML =
+      selectableCount === 0
+        ? '<i data-lucide="circle-check"></i><span>TODOS LOS INGRESOS FUERON REGISTRADOS</span>'
+        : '<i data-lucide="user-round-plus"></i><span>REGISTRAR INGRESO</span>';
+
 
     show("result-card");
 
-    if (window.lucide) window.lucide.createIcons();
+
+    if (window.lucide)
+      window.lucide.createIcons();
   }
 
-  $("search-form").addEventListener("submit", event => {
-  event.preventDefault();
-  searchInvitation($("invitation-search").value);
-});
 
-let searchTypingTimer = null;
+  /* =========================================================
+     BUSCAR
+     ========================================================= */
 
-$("invitation-search").addEventListener("input", () => {
-  clearTimeout(searchTypingTimer);
+  $("search-form").addEventListener(
+    "submit",
+    event => {
 
-  const value = $("invitation-search").value.trim();
+      event.preventDefault();
 
-  // Si borraron el número, limpiamos el resultado
-  if (!value) {
-    currentInvitation = null;
-    hide("result-card");
-    hide("success-box");
-    clearSelectionError();
-    setSearchStatus("");
-    return;
-  }
-
-  setSearchStatus("Buscando…");
-
-  // Espera un momento para que terminen de escribir
-  searchTypingTimer = setTimeout(() => {
-    searchInvitation(value);
-  }, 450);
-});
-
-  $("select-all").addEventListener("change", () => {
-    document.querySelectorAll(".member-check").forEach(input => {
-      input.checked = $("select-all").checked;
-    });
-  });
-
-  $("member-list").addEventListener("change", event => {
-    if (!event.target.classList.contains("member-check")) return;
-    const checks = [...document.querySelectorAll(".member-check")];
-    const selected = checks.filter(x => x.checked).length;
-    $("select-all").checked = checks.length > 0 && selected === checks.length;
-    $("select-all").indeterminate = selected > 0 && selected < checks.length;
-  });
-
-  $("register-button").addEventListener("click", async () => {
-    if (!currentInvitation) return;
-
-    const selected = [...document.querySelectorAll(".member-check:checked")]
-      .map(input => input.value);
-
-    if (!selected.length){
-      $("selection-error").textContent =
-        "Selecciona por lo menos una persona para registrar su ingreso.";
-      show("selection-error");
-      return;
+      searchInvitation(
+        $("invitation-search").value
+      );
     }
+  );
 
-    clearSelectionError();
 
-    const button = $("register-button");
-    const originalText = button.textContent;
-    button.disabled = true;
-    button.textContent = "REGISTRANDO…";
+  let searchTypingTimer = null;
 
-    const successful = [];
-    const failed = [];
 
-    for (const name of selected){
-      const { data, error } = await db.rpc("registrar_ingreso_control", {
-        p_invitacion_id: currentInvitation.invitacion_id,
-        p_nombre_integrante: name
-      });
+  $("invitation-search").addEventListener(
+    "input",
+    () => {
 
-      if (error){
-        console.error(error);
-        failed.push(name);
-        continue;
+      clearTimeout(searchTypingTimer);
+
+      const value =
+        $("invitation-search")
+          .value
+          .trim();
+
+
+      if (!value){
+
+        currentInvitation = null;
+
+        hide("result-card");
+        hide("success-box");
+
+        clearSelectionError();
+
+        setSearchStatus("");
+
+        return;
       }
 
-      const result = data || {};
-      if (result.ok === true) successful.push(name);
-      else failed.push(name);
+
+      setSearchStatus("Buscando…");
+
+
+      searchTypingTimer =
+        setTimeout(
+          () => {
+            searchInvitation(value);
+          },
+          450
+        );
     }
+  );
 
-    button.disabled = false;
-    button.textContent = originalText;
 
-    if (!successful.length){
-      $("selection-error").textContent =
-        "No fue posible registrar el ingreso. Verifica e inténtalo nuevamente.";
-      show("selection-error");
-      return;
+  /* =========================================================
+     BOTÓN LIMPIAR
+     ========================================================= */
+
+  $("clear-search").addEventListener(
+    "click",
+    () => {
+
+      $("invitation-search").value = "";
+
+      currentInvitation = null;
+
+      hide("result-card");
+      hide("success-box");
+
+      clearSelectionError();
+
+      setSearchStatus("");
+
+      $("invitation-search").focus();
     }
+  );
 
-    await refreshGlobalCount();
 
-    $("success-text").textContent =
-      successful.length === 1
-        ? "1 persona ingresó correctamente."
-        : successful.length + " personas ingresaron correctamente.";
+  /* =========================================================
+     SELECCIONAR TODOS
+     ========================================================= */
 
-    show("success-box");
-    hide("result-card");
+  $("select-all").addEventListener(
+    "change",
+    () => {
 
-    if (failed.length){
-      console.warn("No se registraron:", failed);
+      document
+        .querySelectorAll(".member-check")
+        .forEach(input => {
+
+          input.checked =
+            $("select-all").checked;
+
+        });
     }
+  );
 
-    resetTimer = setTimeout(resetForNextSearch, 1800);
-  });
+
+  $("member-list").addEventListener(
+    "change",
+    event => {
+
+      if (
+        !event.target.classList.contains(
+          "member-check"
+        )
+      ){
+        return;
+      }
+
+
+      const checks =
+        [
+          ...document.querySelectorAll(
+            ".member-check"
+          )
+        ];
+
+
+      const selected =
+        checks.filter(
+          x => x.checked
+        ).length;
+
+
+      $("select-all").checked =
+        checks.length > 0 &&
+        selected === checks.length;
+
+
+      $("select-all").indeterminate =
+        selected > 0 &&
+        selected < checks.length;
+    }
+  );
+
+
+  /* =========================================================
+     REGISTRAR INGRESO
+     ========================================================= */
+
+  $("register-button").addEventListener(
+    "click",
+    async () => {
+
+      if (!currentInvitation)
+        return;
+
+
+      const selected =
+        [
+          ...document.querySelectorAll(
+            ".member-check:checked"
+          )
+        ].map(
+          input => input.value
+        );
+
+
+      if (!selected.length){
+
+        $("selection-error").textContent =
+          "Selecciona por lo menos una persona para registrar su ingreso.";
+
+        show("selection-error");
+
+        return;
+      }
+
+
+      clearSelectionError();
+
+
+      const button =
+        $("register-button");
+
+
+      const originalText =
+        button.textContent;
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "REGISTRANDO…";
+
+
+      const successful = [];
+      const failed = [];
+
+
+      for (const name of selected){
+
+        const { data, error } =
+          await db.rpc(
+            "registrar_ingreso_control",
+            {
+              p_invitacion_id:
+                currentInvitation.invitacion_id,
+
+              p_nombre_integrante:
+                name
+            }
+          );
+
+
+        if (error){
+
+          console.error(error);
+
+          failed.push(name);
+
+          continue;
+        }
+
+
+        const result =
+          data || {};
+
+
+        if (result.ok === true)
+          successful.push(name);
+        else
+          failed.push(name);
+      }
+
+
+      button.disabled = false;
+
+      button.textContent =
+        originalText;
+
+
+      if (!successful.length){
+
+        $("selection-error").textContent =
+          "No fue posible registrar el ingreso. Verifica e inténtalo nuevamente.";
+
+        show("selection-error");
+
+        return;
+      }
+
+
+      await refreshGlobalCount();
+
+
+      $("success-text").textContent =
+        successful.length === 1
+          ? "1 persona ingresó correctamente."
+          : successful.length +
+            " personas ingresaron correctamente.";
+
+
+      show("success-box");
+
+      hide("result-card");
+
+
+      if (failed.length){
+
+        console.warn(
+          "No se registraron:",
+          failed
+        );
+      }
+
+
+      resetTimer =
+        setTimeout(
+          resetForNextSearch,
+          1800
+        );
+    }
+  );
+
+
+  /* =========================================================
+     INICIALIZACIÓN
+     ========================================================= */
 
   refreshGlobalCount();
+
 
   if (window.lucide){
     window.lucide.createIcons();
   }
 
+
   $("invitation-search").focus();
+
 })();
 </script>
 
@@ -877,16 +2086,10 @@ $("invitation-search").addEventListener("input", () => {
   de inteligencia artificial. La base de invitados se mantiene en Supabase y
   este formulario únicamente consulta la invitación solicitada, distingue internamente adultos/niños y registra ingresos.
 
-  <!-- 
-  © 2026 FM. 
-  Concepto, estructura y desarrollo adaptados para este evento con asistencia de herramientas de inteligencia artificial.
+  Las bibliotecas, tipografías, personajes y demás recursos de terceros pertenecen
+  a sus respectivos titulares y se utilizan conforme a sus respectivas licencias
+  y/o derechos aplicables.
+-->
 
-  Las bibliotecas, tipografías, personajes y demás recursos de terceros pertenecen a sus respectivos titulares y se utilizan conforme
-  a sus respectivas licencias y/o derechos aplicables.
-  
--->
-  
--->
--->
 </body>
 </html>
