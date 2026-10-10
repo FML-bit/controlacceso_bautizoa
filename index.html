@@ -17,1036 +17,990 @@
 
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --navy:#173b67;
-      --navy-dark:#12345d;
-      --blue:#5d84b1;
-      --blue-soft:#edf4fb;
-      --blue-soft-2:#f5f9fd;
-      --blue-line:#d7e3ef;
-
-      --text:#203b5c;
-      --muted:#72849a;
-
-      --line:#dce6ef;
-      --white:#ffffff;
-
-      --success:#2d8a60;
-      --success-soft:#eaf7f0;
-
-      --pending:#25875c;
-      --pending-soft:#e8f6ef;
-
-      --danger:#a34440;
-      --danger-soft:#fff3f2;
-
-      --shadow:0 10px 30px rgba(31,73,111,.09);
-    }
-
-    *{
-      box-sizing:border-box;
-    }
-
-    html,
-    body{
-      margin:0;
-      width:100%;
-      min-height:100%;
-      background:#f3f8fc;
-      color:var(--text);
-    }
-
-    body{
-      font-family:"DM Sans",sans-serif;
-    }
-
-    button,
-    input{
-      font:inherit;
-    }
-
-    button{
-      cursor:pointer;
-    }
-
-    button:disabled{
-      cursor:not-allowed;
-      opacity:.55;
-    }
-
-    .hidden{
-      display:none!important;
-    }
-
-    /* =========================================================
-       CONTENEDOR GENERAL
-       ========================================================= */
-
-    .page{
-      width:100%;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      padding:26px 18px 45px;
-    }
-
-    .shell{
-      width:100%;
-      max-width:1080px;
-    }
-
-    /* =========================================================
-       DECORACIÓN DE HOJAS
-       ========================================================= */
-
-    .decorated{
-      position:relative;
-      overflow:hidden;
-    }
-
-    .leaf-decoration{
-      position:absolute;
-      top:14px;
-      right:16px;
-      width:90px;
-      height:85px;
-      pointer-events:none;
-      opacity:.45;
-    }
-
-    .leaf-decoration i{
-      position:absolute;
-      color:#9bb6cf;
-    }
-
-    .leaf-1{
-      top:5px;
-      right:4px;
-      transform:rotate(30deg);
-    }
-
-    .leaf-2{
-      top:28px;
-      right:31px;
-      transform:rotate(-25deg);
-    }
-
-    .leaf-3{
-      top:48px;
-      right:3px;
-      transform:rotate(48deg);
-    }
-
-    /* =========================================================
-       TARJETAS
-       ========================================================= */
-
-    .card{
-      background:var(--white);
-      border:1px solid var(--blue-line);
-      border-radius:22px;
-      box-shadow:var(--shadow);
-    }
-
-    /* =========================================================
-       BUSCADOR
-       ========================================================= */
-
-    .search-card{
-      padding:25px 28px 28px;
-      background:#ffffff;
-    }
-
-    .search-label-row{
-      display:flex;
-      align-items:center;
-      gap:13px;
-      margin-bottom:12px;
-    }
-
-    .search-icon-box{
-      width:45px;
-      height:45px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex:none;
-
-      color:var(--navy);
-      background:#e7f0f9;
-      border-radius:13px;
-    }
-
-    .search-icon-box svg{
-      width:24px;
-      height:24px;
-      stroke-width:2;
-    }
-
-    .label{
-      display:block;
-      margin:0;
-      color:var(--navy);
-      font-size:18px;
-      font-weight:600;
-    }
-
-    .search-row{
-      display:grid;
-      grid-template-columns:minmax(0,1fr) 320px;
-      gap:15px;
-    }
-
-    .search-input-wrap{
-      position:relative;
-    }
-
-    .search-row input{
-      width:100%;
-      height:66px;
-      padding:0 48px 0 22px;
-
-      color:var(--navy);
-      background:#fff;
-
-      border:2px solid #c9d8e7;
-      border-radius:17px;
-
-      outline:none;
-
-      font-size:21px;
-      font-weight:500;
-
-      transition:.2s ease;
-    }
-
-    .search-row input:focus{
-      border-color:#6e94bb;
-      box-shadow:0 0 0 4px rgba(93,132,177,.10);
-    }
-
-    .search-clear{
-      position:absolute;
-      top:50%;
-      right:16px;
-
-      width:30px;
-      height:30px;
-
-      transform:translateY(-50%);
-
-      border:0;
-      background:transparent;
-      color:#74869a;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .search-clear svg{
-      width:21px;
-      height:21px;
-    }
-
-    .primary{
-      min-height:66px;
-      padding:0 22px;
-
-      border:0;
-      border-radius:17px;
-
-      background:var(--navy);
-      color:#fff;
-
-      font-size:16px;
-      font-weight:700;
-
-      letter-spacing:.02em;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:12px;
-
-      transition:.2s ease;
-    }
-
-    .primary svg{
-      width:24px;
-      height:24px;
-      stroke-width:2.4;
-    }
-
-    .primary:hover:not(:disabled){
-      background:var(--navy-dark);
-      transform:translateY(-1px);
-    }
-
-    .search-status{
-      min-height:18px;
-      margin-top:9px;
-
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    .search-status.error{
-      color:var(--danger);
-    }
-
-    /* =========================================================
-       RESULTADO DE INVITACIÓN
-       ========================================================= */
-
-    .result-card{
-      margin-top:22px;
-    }
-
-    .result-head{
-      position:relative;
-      padding:27px 34px 25px;
-
-      background:#edf4fb;
-      border-bottom:1px solid var(--blue-line);
-    }
-
-    .result-number{
-      margin:0;
-
-      color:#315a84;
-
-      font-size:16px;
-      font-weight:700;
-
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .result-family{
-      margin:5px 0 0;
-
-      color:var(--navy);
-
-      font-size:25px;
-      font-weight:600;
-    }
-
-    .result-main{
-      margin-top:20px;
-
-      display:grid;
-      grid-template-columns:minmax(260px,1fr) minmax(450px,1.25fr);
-      gap:25px;
-
-      align-items:center;
-    }
-
-    /* =========================================================
-       MESA
-       ========================================================= */
-
-    .table-area{
-      display:flex;
-      align-items:center;
-      gap:17px;
-    }
+ <style>
+:root{
+  --navy:#173b67;
+  --navy-dark:#12345d;
+  --blue:#234d7d;
+  --blue-soft:#eef5fc;
+  --blue-bg:#f2f7fc;
+  --blue-line:#d5e2ef;
+  --text:#18395f;
+  --muted:#72849a;
+  --white:#ffffff;
+
+  --green:#238052;
+  --green-soft:#e6f5ed;
+  --green-line:#c9e8d7;
+
+  --danger:#a43b3b;
+  --danger-soft:#fff4f3;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:
+    linear-gradient(180deg,#edf5fc 0%,#f7fbff 100%);
+  color:var(--text);
+}
+
+body{
+  font-family:"DM Sans",sans-serif;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+button:disabled{
+  cursor:not-allowed;
+  opacity:.55;
+}
+
+.hidden{
+  display:none!important;
+}
+
+
+/* =========================================================
+   CONTENEDOR GENERAL
+========================================================= */
+
+.page{
+  width:100%;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:26px 18px 45px;
+}
+
+.shell{
+  width:100%;
+  max-width:1080px;
+}
+
+
+/* =========================================================
+   TARJETAS GENERALES
+========================================================= */
+
+.card{
+  background:rgba(255,255,255,.96);
+  border:1px solid #d9e5f0;
+  border-radius:22px;
+  box-shadow:
+    0 12px 35px rgba(32,70,110,.09),
+    0 2px 6px rgba(32,70,110,.04);
+}
+
+
+/* =========================================================
+   BUSCADOR
+========================================================= */
+
+.search-card{
+  padding:25px 30px 27px;
+  margin-bottom:20px;
+}
+
+.search-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:13px;
+}
 
-    .table-icon{
-      width:75px;
-      height:75px;
+.search-icon-box{
+  width:42px;
+  height:42px;
+  flex:none;
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-      color:var(--navy);
-      background:transparent;
-    }
+  border-radius:12px;
+  background:#eaf2fb;
+  color:var(--navy);
+}
 
-    .table-icon svg{
-      width:68px;
-      height:68px;
-      stroke-width:1.7;
-    }
+.search-icon-box svg{
+  width:22px;
+  height:22px;
+  stroke-width:2.2;
+}
 
-    .table-label{
-      margin:0;
+.label{
+  display:block;
+  margin:0;
+  color:var(--navy);
+  font-size:17px;
+  font-weight:600;
+}
 
-      color:#315a84;
+.search-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:14px;
+}
 
-      font-size:17px;
-      font-weight:600;
+.search-row input{
+  width:100%;
+  min-height:62px;
+
+  padding:0 48px 0 20px;
+
+  color:var(--navy);
+  background:#fff;
+
+  border:2px solid #cad9e8;
+  border-radius:15px;
+
+  outline:none;
+
+  font-size:19px;
+  font-weight:500;
 
-      letter-spacing:.05em;
-      text-transform:uppercase;
-    }
+  transition:.2s ease;
+}
 
-    .table-number{
-      margin:0;
+.search-row input:focus{
+  border-color:#87a8ca;
+  box-shadow:0 0 0 4px rgba(73,122,171,.10);
+}
 
-      color:var(--navy);
+.primary{
+  min-height:62px;
 
-      font-size:58px;
-      line-height:.95;
-      font-weight:700;
-    }
+  padding:0 24px;
 
-    .table-number.unassigned{
-      font-size:27px;
-    }
+  border:0;
+  border-radius:15px;
 
-    /* =========================================================
-       MÉTRICAS
-       ========================================================= */
+  background:var(--navy);
+  color:#fff;
 
-    .metrics{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:0;
+  font-size:15px;
+  font-weight:700;
+  letter-spacing:.02em;
 
-      background:#ffffff;
-      border-radius:18px;
+  transition:.2s ease;
+}
 
-      overflow:hidden;
+.primary:hover:not(:disabled){
+  background:#102f54;
+  transform:translateY(-1px);
+}
 
-      box-shadow:0 5px 18px rgba(32,68,101,.055);
-    }
 
-    .metric{
-      min-height:94px;
-      padding:15px 18px;
+/* =========================================================
+   RESULTADO DE INVITACIÓN
+========================================================= */
 
-      display:grid;
-      grid-template-columns:35px 1fr;
-      grid-template-rows:auto auto;
+.result-card{
+  margin-top:0;
+  overflow:hidden;
+}
 
-      align-items:center;
 
-      border-right:1px solid var(--blue-line);
-    }
+/* =========================================================
+   ENCABEZADO DE INVITACIÓN
+========================================================= */
 
-    .metric:last-child{
-      border-right:0;
-    }
+.result-head{
+  position:relative;
 
-    .metric-icon{
-      grid-row:1 / span 2;
+  padding:29px 38px 30px;
 
-      width:31px;
-      height:31px;
+  background:
+    linear-gradient(
+      135deg,
+      #f1f7fd 0%,
+      #edf5fc 60%,
+      #e8f1fa 100%
+    );
 
-      color:#315a84;
-    }
+  border-bottom:1px solid #dce7f1;
+}
 
-    .metric-icon svg{
-      width:29px;
-      height:29px;
-      stroke-width:1.8;
-    }
 
-    .metric span{
-      color:#72849a;
+/* pequeño adorno visual */
+.result-head::after{
+  content:"";
+  position:absolute;
+  right:24px;
+  top:18px;
 
-      font-size:12px;
-      font-weight:600;
+  width:90px;
+  height:90px;
 
-      line-height:1.1;
-    }
+  opacity:.18;
 
-    .metric strong{
-      margin-top:2px;
+  background:
+    radial-gradient(
+      ellipse at 30% 30%,
+      transparent 0 22%,
+      #6d91b6 23% 27%,
+      transparent 28%
+    ),
+    radial-gradient(
+      ellipse at 70% 60%,
+      transparent 0 22%,
+      #6d91b6 23% 27%,
+      transparent 28%
+    );
 
-      color:var(--navy);
+  transform:rotate(-20deg);
+  pointer-events:none;
+}
 
-      font-size:27px;
-      line-height:1;
-      font-weight:700;
-    }
+.result-eyebrow{
+  position:relative;
+  z-index:1;
 
-    /* =========================================================
-       PERSONAS
-       ========================================================= */
+  margin:0;
 
-    .members{
-      padding:26px 34px 32px;
-    }
+  color:var(--navy);
 
-    .members-title{
-      margin:0 0 14px;
+  font-size:15px;
+  font-weight:700;
 
-      color:var(--navy);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
 
-      font-size:18px;
-      font-weight:600;
-    }
+.result-head h2{
+  position:relative;
+  z-index:1;
 
-    .select-all{
-      display:flex;
-      align-items:center;
-      gap:10px;
+  margin:5px 0 25px;
 
-      width:max-content;
+  color:#193e68;
 
-      margin-bottom:12px;
-      padding:4px 8px;
+  font-family:"DM Sans",sans-serif;
+  font-size:23px;
+  font-weight:700;
+}
 
-      color:#65788e;
 
-      font-size:14px;
-      font-weight:500;
+/* =========================================================
+   MESA + MÉTRICAS
+========================================================= */
 
-      cursor:pointer;
-    }
+.invitation-summary{
+  display:grid;
+  grid-template-columns:minmax(280px,1fr) minmax(430px,1.35fr);
+  align-items:center;
+  gap:30px;
+}
 
-    .select-all input{
-      width:20px;
-      height:20px;
 
-      accent-color:var(--navy);
-    }
+/* Mesa */
 
-    .member-list{
-      display:grid;
-      gap:11px;
-    }
+.table-box{
+  display:flex;
+  align-items:center;
+  gap:17px;
+}
 
-    .member{
-      min-height:67px;
+.table-icon{
+  width:68px;
+  height:68px;
 
-      display:flex;
-      align-items:center;
-      gap:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-      padding:10px 16px;
+  color:var(--navy);
+}
 
-      border:1px solid #d9e4ee;
-      border-radius:16px;
+.table-icon svg{
+  width:55px;
+  height:55px;
+  stroke-width:1.8;
+}
 
-      background:#fff;
+.table-info{
+  display:flex;
+  flex-direction:column;
+}
 
-      transition:.18s ease;
-    }
+.table-label{
+  color:#647b94;
 
-    .member.pending{
-      cursor:pointer;
-    }
+  font-size:13px;
+  font-weight:700;
 
-    .member.pending:hover{
-      border-color:#a8c1d9;
-      box-shadow:0 4px 14px rgba(32,68,101,.06);
-    }
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
 
-    .member.entered{
-      background:#f0f8f4;
-      border-color:#cae5d7;
-    }
+.table-number{
+  margin-top:1px;
 
-    .member input{
-      width:22px;
-      height:22px;
+  color:#173e6b;
 
-      accent-color:var(--navy);
+  font-size:40px;
+  font-weight:700;
 
-      flex:none;
-    }
+  line-height:1;
+}
 
-    .member-person-icon{
-      width:42px;
-      height:42px;
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
+/* Métricas */
 
-      flex:none;
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
 
-      color:#6685a5;
-      background:#eaf1f8;
+  overflow:hidden;
 
-      border-radius:50%;
-    }
+  background:#fff;
 
-    .member-person-icon svg{
-      width:23px;
-      height:23px;
-      stroke-width:1.8;
-    }
+  border:1px solid #e0e9f2;
+  border-radius:15px;
 
-    .member-name{
-      flex:1;
+  box-shadow:0 6px 18px rgba(35,72,110,.05);
+}
 
-      color:var(--navy);
+.metric{
+  min-height:76px;
 
-      font-size:16px;
-      font-weight:600;
-    }
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 
-    .badge{
-      flex:none;
+  border-right:1px solid #dbe5ee;
+}
 
-      padding:8px 13px;
+.metric:last-child{
+  border-right:0;
+}
 
-      border-radius:999px;
+.metric-icon{
+  color:var(--navy);
+  margin-bottom:3px;
+}
 
-      font-size:11px;
-      font-weight:700;
-    }
+.metric-icon svg{
+  width:21px;
+  height:21px;
+  stroke-width:1.8;
+}
 
-    .badge.entered{
-      color:#247d53;
-      background:#dcefe5;
-    }
+.metric span{
+  color:#6f8398;
 
-    .badge.pending{
-      color:#247d53;
-      background:#e3f4eb;
-    }
+  font-size:11px;
+  font-weight:600;
 
-    .child-tag{
-      display:inline-flex;
-      align-items:center;
+  letter-spacing:.02em;
+}
 
-      padding:5px 9px;
+.metric strong{
+  display:block;
 
-      border-radius:999px;
+  margin-top:1px;
 
-      color:#6f5928;
-      background:#fff5d9;
-      border:1px solid #ead7a3;
+  color:#173b67;
 
-      font-size:10px;
-      font-weight:700;
+  font-size:23px;
+  line-height:1;
 
-      letter-spacing:.03em;
-      text-transform:uppercase;
+  font-weight:700;
+}
 
-      white-space:nowrap;
-    }
 
-    .register{
-      width:100%;
-      margin-top:18px;
-    }
+/* =========================================================
+   PERSONAS
+========================================================= */
 
-    /* =========================================================
-       AVISO DE INGRESO
-       ========================================================= */
+.members{
+  padding:25px 38px 31px;
+  background:#fff;
+}
 
-    .notice{
-      margin-top:18px;
+.members-title{
+  margin:0 0 14px;
 
-      padding:18px 20px;
+  color:var(--navy);
 
-      border-radius:17px;
-      border:1px solid #cfe4d6;
+  font-size:15px;
+  font-weight:700;
+}
 
-      background:var(--success-soft);
-      color:var(--success);
+.select-all{
+  display:flex;
+  align-items:center;
+  gap:9px;
 
-      box-shadow:0 8px 22px rgba(47,111,78,.06);
-    }
+  margin-bottom:12px;
 
-    .notice-row{
-      display:flex;
-      gap:11px;
-      align-items:flex-start;
-    }
+  color:#657b92;
 
-    .notice-row svg{
-      width:24px;
-      height:24px;
-      flex:none;
-    }
+  font-size:13px;
+  font-weight:500;
 
-    .notice h3{
-      margin:0;
-      font-size:17px;
-    }
+  cursor:pointer;
+}
 
-    .notice p{
-      margin:4px 0 0;
-      font-size:13px;
-      line-height:1.5;
-    }
+.select-all input{
+  width:18px;
+  height:18px;
+  accent-color:var(--navy);
+}
 
-    .error-box{
-      margin-top:14px;
-      padding:12px 14px;
+.member-list{
+  display:grid;
+  gap:10px;
+}
 
-      color:var(--danger);
-      background:var(--danger-soft);
+.member{
+  min-height:68px;
 
-      border:1px solid #efcbc7;
-      border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:13px;
 
-      font-size:12px;
-    }
+  padding:11px 16px;
 
-    /* =========================================================
-       CONTADOR GLOBAL
-       ========================================================= */
+  border:1px solid #d6e2ed;
+  border-radius:14px;
 
-    .counter{
-      position:relative;
+  background:#fff;
 
-      margin-top:22px;
-      padding:25px 34px 28px;
+  transition:.18s ease;
+}
 
-      text-align:center;
+.member.pending{
+  cursor:pointer;
+}
 
-      overflow:hidden;
-    }
+.member.pending:hover{
+  border-color:#a8bfd7;
+  box-shadow:0 5px 15px rgba(34,75,116,.06);
+}
 
-    .counter-title{
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:11px;
+.member.entered{
+  background:var(--green-soft);
+  border-color:var(--green-line);
+}
 
-      color:#315a84;
+.member input{
+  width:18px;
+  height:18px;
+  flex:none;
 
-      font-size:15px;
-      font-weight:700;
+  accent-color:var(--navy);
+}
 
-      letter-spacing:.14em;
-      text-transform:uppercase;
-    }
+.member-name{
+  flex:1;
 
-    .counter-title svg{
-      width:30px;
-      height:30px;
-      stroke-width:1.8;
-    }
+  color:#183d67;
 
-    .counter-number{
-      display:block;
+  font-size:15px;
+  font-weight:600;
+}
 
-      margin-top:14px;
 
-      color:var(--navy);
+/* Avatar */
 
-      font-size:54px;
-      line-height:1;
-      font-weight:700;
-    }
+.member-avatar{
+  width:42px;
+  height:42px;
+  flex:none;
 
-    .counter small{
-      display:block;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-      margin-top:2px;
+  border-radius:50%;
 
-      color:#72849a;
+  background:#eaf2fa;
+  color:#6583a3;
+}
 
-      font-size:16px;
-    }
+.member-avatar svg{
+  width:23px;
+  height:23px;
+  stroke-width:1.8;
+}
 
-    .counter-breakdown{
-      display:grid;
-      grid-template-columns:1fr 1fr;
 
-      margin-top:20px;
-      padding-top:18px;
+/* Estado */
 
-      border-top:1px solid var(--blue-line);
-    }
+.badge{
+  flex:none;
 
-    .counter-breakdown div{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:13px;
+  padding:6px 12px;
 
-      min-height:57px;
-    }
+  border-radius:999px;
 
-    .counter-breakdown div:first-child{
-      border-right:1px solid var(--blue-line);
-    }
+  font-size:10px;
+  font-weight:700;
 
-    .counter-person-icon{
-      width:35px;
-      height:35px;
+  letter-spacing:.02em;
+}
 
-      color:#6685a5;
-    }
+.badge.entered{
+  color:var(--green);
+  background:#d9f0e3;
+}
 
-    .counter-person-icon svg{
-      width:35px;
-      height:35px;
-      stroke-width:1.7;
-    }
+.badge.pending{
+  color:#237b50;
+  background:#e3f5eb;
+}
 
-    .counter-info{
-      text-align:left;
-    }
 
-    .counter-breakdown b{
-      display:block;
+/* Niño */
 
-      color:var(--navy);
+.child-tag{
+  display:inline-flex;
+  align-items:center;
 
-      font-size:24px;
-      line-height:1;
-    }
+  padding:4px 8px;
 
-    .counter-breakdown em{
-      display:block;
+  border-radius:999px;
 
-      margin-top:4px;
+  color:#765b27;
+  background:#fff5dc;
+  border:1px solid #ead6a5;
 
-      color:#72849a;
+  font-size:9px;
+  font-weight:700;
 
-      font-size:11px;
-      font-style:normal;
-      font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
 
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
+  white-space:nowrap;
+}
 
-    /* =========================================================
-       FOOTER
-       ========================================================= */
 
-    footer{
-      padding:22px 0 0;
+/* Botón registrar */
 
-      text-align:center;
+.register{
+  width:100%;
+  margin-top:18px;
 
-      color:#91a0af;
+  min-height:62px;
 
-      font-size:10px;
-      line-height:1.5;
-    }
+  border-radius:15px;
 
-    /* =========================================================
-       TABLET
-       ========================================================= */
+  font-size:15px;
+}
 
-    @media(max-width:850px){
 
-      .result-main{
-        grid-template-columns:1fr;
-        gap:18px;
-      }
+/* =========================================================
+   MENSAJES
+========================================================= */
 
-      .table-area{
-        justify-content:center;
-      }
+.notice{
+  margin-top:18px;
 
-      .search-row{
-        grid-template-columns:1fr 260px;
-      }
-    }
+  padding:18px 22px;
 
-    /* =========================================================
-       MÓVIL
-       ========================================================= */
+  border-radius:16px;
 
-    @media(max-width:620px){
+  border:1px solid var(--green-line);
+  background:var(--green-soft);
 
-      .page{
-        padding:15px 10px 30px;
-      }
+  color:var(--green);
 
-      .search-card{
-        padding:19px;
-        border-radius:18px;
-      }
+  box-shadow:0 8px 22px rgba(47,111,78,.06);
+}
 
-      .search-label-row{
-        gap:10px;
-      }
+.notice-row{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
 
-      .search-icon-box{
-        width:40px;
-        height:40px;
-      }
+.notice h3{
+  margin:0;
+  font-size:17px;
+}
 
-      .label{
-        font-size:15px;
-      }
+.notice p{
+  margin:4px 0 0;
+  font-size:13px;
+  line-height:1.5;
+}
 
-      .search-row{
-        grid-template-columns:1fr;
-        gap:10px;
-      }
+.error-box{
+  margin-top:14px;
 
-      .search-row input{
-        height:57px;
-        font-size:18px;
-        border-radius:14px;
-      }
+  padding:13px 15px;
 
-      .primary{
-        min-height:57px;
-        border-radius:14px;
-        font-size:14px;
-      }
+  color:var(--danger);
+  background:var(--danger-soft);
 
-      .result-card{
-        border-radius:18px;
-      }
+  border:1px solid #efcbc7;
+  border-radius:12px;
 
-      .result-head{
-        padding:21px 18px 20px;
-      }
+  font-size:12px;
+}
 
-      .result-number{
-        font-size:13px;
-      }
 
-      .result-family{
-        font-size:21px;
-      }
+/* =========================================================
+   CONTADOR GENERAL
+========================================================= */
 
-      .result-main{
-        margin-top:18px;
-      }
+.counter{
+  margin-top:20px;
+  padding:29px 38px 31px;
 
-      .table-area{
-        justify-content:flex-start;
-      }
+  text-align:center;
+}
 
-      .table-icon{
-        width:59px;
-        height:59px;
-      }
+.counter > span{
+  display:block;
 
-      .table-icon svg{
-        width:55px;
-        height:55px;
-      }
+  color:#244b74;
 
-      .table-label{
-        font-size:13px;
-      }
+  font-size:15px;
+  font-weight:700;
 
-      .table-number{
-        font-size:45px;
-      }
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
 
-      .table-number.unassigned{
-        font-size:23px;
-      }
+.counter strong{
+  display:block;
 
-      .metrics{
-        grid-template-columns:repeat(3,1fr);
-        border-radius:14px;
-      }
+  margin-top:8px;
 
-      .metric{
-        min-height:82px;
-        padding:11px 8px;
+  color:#173b67;
 
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
+  font-size:55px;
+  font-weight:700;
 
-        text-align:center;
-        gap:4px;
-      }
+  line-height:1;
+}
 
-      .metric-icon{
-        width:25px;
-        height:25px;
-      }
+.counter small{
+  display:block;
 
-      .metric-icon svg{
-        width:23px;
-        height:23px;
-      }
+  margin-top:5px;
 
-      .metric span{
-        font-size:9px;
-      }
+  color:#70849a;
 
-      .metric strong{
-        font-size:22px;
-      }
+  font-size:14px;
+}
 
-      .members{
-        padding:21px 18px 23px;
-      }
+.counter-breakdown{
+  display:grid;
+  grid-template-columns:1fr 1fr;
 
-      .members-title{
-        font-size:15px;
-      }
+  max-width:850px;
+  margin:22px auto 0;
 
-      .member{
-        min-height:61px;
-        padding:9px 10px;
-        gap:9px;
-      }
+  padding-top:19px;
 
-      .member-person-icon{
-        width:37px;
-        height:37px;
-      }
+  border-top:1px solid #d9e4ee;
+}
 
-      .member-person-icon svg{
-        width:20px;
-        height:20px;
-      }
+.counter-breakdown div{
+  padding:8px 10px;
+}
 
-      .member-name{
-        font-size:14px;
-      }
+.counter-breakdown div:first-child{
+  border-right:1px solid #d9e4ee;
+}
 
-      .badge{
-        padding:6px 9px;
-        font-size:9px;
-      }
+.counter-breakdown b{
+  display:block;
 
-      .child-tag{
-        display:none;
-      }
+  color:#234a73;
 
-      .counter{
-        padding:21px 18px 23px;
-        border-radius:18px;
-      }
+  font-size:23px;
+}
 
-      .counter-title{
-        font-size:12px;
-      }
+.counter-breakdown em{
+  display:block;
 
-      .counter-number{
-        font-size:47px;
-      }
+  margin-top:3px;
 
-      .counter-breakdown div{
-        gap:8px;
-      }
+  color:#72869b;
 
-      .counter-breakdown b{
-        font-size:21px;
-      }
-    }
+  font-size:11px;
+  font-style:normal;
+  font-weight:700;
 
-    @media(max-width:390px){
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
 
-      .metric span{
-        font-size:8px;
-      }
 
-      .metric strong{
-        font-size:20px;
-      }
+/* =========================================================
+   FOOTER
+========================================================= */
 
-      .member-name{
-        font-size:13px;
-      }
+footer{
+  padding:22px 0 0;
 
-      .badge{
-        padding:5px 7px;
-        font-size:8px;
-      }
-    }
-  </style>
+  text-align:center;
+
+  color:#8a9aaa;
+
+  font-size:10px;
+  line-height:1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:800px){
+
+  .page{
+    padding:18px 12px 30px;
+  }
+
+  .search-card{
+    padding:20px;
+  }
+
+  .search-row{
+    grid-template-columns:1fr 220px;
+  }
+
+  .result-head{
+    padding:25px 25px 27px;
+  }
+
+  .members{
+    padding:23px 25px 27px;
+  }
+
+  .invitation-summary{
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+
+  .table-box{
+    padding-bottom:2px;
+  }
+
+  .counter{
+    padding:25px;
+  }
+}
+
+
+@media(max-width:620px){
+
+  .page{
+    padding:12px 8px 25px;
+  }
+
+  .search-card{
+    padding:17px;
+    border-radius:17px;
+  }
+
+  .search-top{
+    gap:9px;
+    margin-bottom:10px;
+  }
+
+  .search-icon-box{
+    width:34px;
+    height:34px;
+    border-radius:9px;
+  }
+
+  .search-icon-box svg{
+    width:18px;
+    height:18px;
+  }
+
+  .label{
+    font-size:12px;
+  }
+
+  .search-row{
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+
+  .search-row input{
+    min-height:48px;
+    font-size:15px;
+    border-radius:11px;
+  }
+
+  .primary{
+    min-height:48px;
+    border-radius:11px;
+    font-size:12px;
+  }
+
+  .result-card{
+    border-radius:17px;
+  }
+
+  .result-head{
+    padding:20px 17px 21px;
+  }
+
+  .result-eyebrow{
+    font-size:10px;
+  }
+
+  .result-head h2{
+    margin:4px 0 19px;
+    font-size:18px;
+  }
+
+  .invitation-summary{
+    gap:16px;
+  }
+
+  .table-box{
+    gap:10px;
+  }
+
+  .table-icon{
+    width:50px;
+    height:50px;
+  }
+
+  .table-icon svg{
+    width:42px;
+    height:42px;
+  }
+
+  .table-label{
+    font-size:10px;
+  }
+
+  .table-number{
+    font-size:32px;
+  }
+
+  .metrics{
+    width:100%;
+  }
+
+  .metric{
+    min-height:64px;
+  }
+
+  .metric-icon svg{
+    width:17px;
+    height:17px;
+  }
+
+  .metric span{
+    font-size:8px;
+  }
+
+  .metric strong{
+    font-size:19px;
+  }
+
+  .members{
+    padding:18px 17px 21px;
+  }
+
+  .members-title{
+    font-size:11px;
+  }
+
+  .select-all{
+    font-size:9px;
+  }
+
+  .member{
+    min-height:52px;
+    padding:7px 9px;
+    gap:8px;
+    border-radius:11px;
+  }
+
+  .member input{
+    width:15px;
+    height:15px;
+  }
+
+  .member-avatar{
+    width:31px;
+    height:31px;
+  }
+
+  .member-avatar svg{
+    width:18px;
+    height:18px;
+  }
+
+  .member-name{
+    font-size:10px;
+  }
+
+  .badge{
+    padding:4px 7px;
+    font-size:7px;
+  }
+
+  .child-tag{
+    padding:3px 6px;
+    font-size:7px;
+  }
+
+  .register{
+    min-height:48px;
+    margin-top:13px;
+    font-size:11px;
+  }
+
+  .counter{
+    margin-top:12px;
+    padding:20px 17px 22px;
+    border-radius:17px;
+  }
+
+  .counter > span{
+    font-size:10px;
+  }
+
+  .counter strong{
+    font-size:42px;
+  }
+
+  .counter small{
+    font-size:11px;
+  }
+
+  .counter-breakdown{
+    margin-top:16px;
+    padding-top:13px;
+  }
+
+  .counter-breakdown b{
+    font-size:18px;
+  }
+
+  .counter-breakdown em{
+    font-size:8px;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -1058,23 +1012,44 @@
          BUSCADOR
          ===================================================== -->
 
-    <section class="card search-card decorated" aria-label="Buscar invitación">
+    <section class="card search-card" aria-label="Buscar invitación">
 
-      <div class="leaf-decoration" aria-hidden="true">
-        <i class="leaf-1" data-lucide="leaf"></i>
-        <i class="leaf-2" data-lucide="leaf"></i>
-        <i class="leaf-3" data-lucide="leaf"></i>
-      </div>
+  <div class="search-top">
+    <div class="search-icon-box">
+      <i data-lucide="ticket"></i>
+    </div>
 
-      <div class="search-label-row">
+    <label for="invitation-search" class="label">
+      Ingresa número de invitación:
+    </label>
+  </div>
 
-        <div class="search-icon-box">
-          <i data-lucide="briefcase-business"></i>
-        </div>
+  <form id="search-form" class="search-row">
 
-        <label for="invitation-search" class="label">
-          Ingresa número de invitación:
-        </label>
+    <input
+      id="invitation-search"
+      type="search"
+      inputmode="numeric"
+      autocomplete="off"
+      enterkeyhint="search"
+      placeholder="Ej. 25"
+      aria-label="Número de invitación"
+    >
+
+    <button id="search-button" type="submit" class="primary">
+      <i data-lucide="search"></i>
+      &nbsp; BUSCAR INVITACIÓN
+    </button>
+
+  </form>
+
+  <div id="search-status"
+       class="search-status"
+       role="status"
+       aria-live="polite">
+  </div>
+
+</section>
 
       </div>
 
@@ -1134,89 +1109,70 @@
       aria-live="polite"
     >
 
-      <div class="result-head decorated">
+      <div class="result-head">
 
-        <div class="leaf-decoration" aria-hidden="true">
-          <i class="leaf-1" data-lucide="leaf"></i>
-          <i class="leaf-2" data-lucide="leaf"></i>
-          <i class="leaf-3" data-lucide="leaf"></i>
+  <p id="result-number" class="result-eyebrow"></p>
+
+  <h2 id="result-family"></h2>
+
+  <div class="invitation-summary">
+
+    <div class="table-box">
+
+      <div class="table-icon">
+        <i data-lucide="layout-grid"></i>
+      </div>
+
+      <div class="table-info">
+        <span class="table-label">Mesa</span>
+        <strong id="table-number" class="table-number">—</strong>
+      </div>
+
+    </div>
+
+
+    <div class="metrics">
+
+      <div class="metric">
+
+        <div class="metric-icon">
+          <i data-lucide="ticket"></i>
         </div>
 
-        <p id="result-number" class="result-number"></p>
-
-        <!-- AQUÍ APARECE EL NOMBRE DE LA FAMILIA -->
-        <h2 id="result-family" class="result-family"></h2>
-
-
-        <div class="result-main">
-
-          <!-- MESA -->
-
-          <div class="table-area">
-
-            <div class="table-icon">
-              <i data-lucide="table-2"></i>
-            </div>
-
-            <div>
-              <p class="table-label">Mesa</p>
-
-              <p
-                id="table-number"
-                class="table-number"
-              >
-                —
-              </p>
-            </div>
-
-          </div>
-
-
-          <!-- MÉTRICAS -->
-
-          <div class="metrics">
-
-            <div class="metric">
-
-              <div class="metric-icon">
-                <i data-lucide="ticket"></i>
-              </div>
-
-              <span>Boletos</span>
-              <strong id="assigned-count">0</strong>
-
-            </div>
-
-
-            <div class="metric">
-
-              <div class="metric-icon">
-                <i data-lucide="user-round-check"></i>
-              </div>
-
-              <span>Ingresaron</span>
-              <strong id="entered-count">0</strong>
-
-            </div>
-
-
-            <div class="metric">
-
-              <div class="metric-icon">
-                <i data-lucide="clock-3"></i>
-              </div>
-
-              <span>Pendientes</span>
-              <strong id="pending-count">0</strong>
-
-            </div>
-
-          </div>
-
-        </div>
+        <span>Boletos</span>
+        <strong id="assigned-count">0</strong>
 
       </div>
 
+
+      <div class="metric">
+
+        <div class="metric-icon">
+          <i data-lucide="user-round"></i>
+        </div>
+
+        <span>Ingresaron</span>
+        <strong id="entered-count">0</strong>
+
+      </div>
+
+
+      <div class="metric">
+
+        <div class="metric-icon">
+          <i data-lucide="clock-3"></i>
+        </div>
+
+        <span>Pendientes</span>
+        <strong id="pending-count">0</strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
       <!-- ===================================================
            PERSONAS
@@ -1704,46 +1660,25 @@
       if (entered){
 
         label.innerHTML = [
-
-          '<i data-lucide="circle-check" style="width:23px;height:23px;color:#2d8a60;flex:none"></i>',
-
-          '<span class="member-person-icon">',
-          '<i data-lucide="user-round"></i>',
-          '</span>',
-
-          '<span class="member-name">',
-          escapeHtml(name),
-          '</span>',
-
-          childTag,
-
-          '<span class="badge entered">Ingresó</span>'
-
-        ].join("");
+  '<input class="member-check" type="checkbox" value="' + escapeHtml(name) + '">',
+  '<span class="member-avatar"><i data-lucide="user-round"></i></span>',
+  '<span class="member-name">' + escapeHtml(name) + '</span>',
+  childTag,
+  '<span class="badge pending">Pendiente</span>'
+].join("");
 
       } else {
 
         selectableCount++;
 
         label.innerHTML = [
-
-          '<input class="member-check" type="checkbox" value="',
-          escapeHtml(name),
-          '">',
-
-          '<span class="member-person-icon">',
-          '<i data-lucide="user-round"></i>',
-          '</span>',
-
-          '<span class="member-name">',
-          escapeHtml(name),
-          '</span>',
-
-          childTag,
-
-          '<span class="badge pending">Pendiente</span>'
-
-        ].join("");
+  '<span class="member-avatar" style="background:#d9f0e3;color:#238052">',
+  '<i data-lucide="circle-check"></i>',
+  '</span>',
+  '<span class="member-name">' + escapeHtml(name) + '</span>',
+  childTag,
+  '<span class="badge entered">Ingresó</span>'
+].join("");
       }
 
 
