@@ -778,21 +778,21 @@ footer {
 
   <section class="card search-card" aria-label="Buscar invitación">
     <div class="search-top">
-      <label for="invitation-search" class="label">
-        Ingresa número de invitación:
-      </label>
+     <button id="search-button" type="submit" class="primary">
+  BUSCAR
+</button>
     </div>
 
     <form id="search-form" class="search-row">
       <input
-        id="invitation-search"
-        type="search"
-        inputmode="numeric"
-        autocomplete="off"
-        enterkeyhint="search"
-        placeholder="Ej. 25"
-        aria-label="Número de invitación"
-      >
+  id="invitation-search"
+  type="search"
+  inputmode="text"
+  autocomplete="off"
+  enterkeyhint="search"
+  placeholder="Ej. 25 o Juan Pérez"
+  aria-label="Número de invitación o nombre"
+>
 
       <button id="search-button" type="submit" class="primary">
         BUSCAR INVITACIÓN
