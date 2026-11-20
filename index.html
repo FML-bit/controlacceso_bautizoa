@@ -436,31 +436,6 @@ button:disabled {
   font-size: 15px;
 }
 
-/* Estado de asistencia: no asistirá */
-
-.no-attendance {
-  margin-top: 18px;
-  padding: 22px 20px;
-  text-align: center;
-  border: 1px solid #e6bbb5;
-  border-radius: 16px;
-  background: #fff8f6;
-  color: #8d3e37;
-}
-
-.no-attendance-title {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.no-attendance-text {
-  margin: 7px 0 0;
-  color: #9a625d;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
 /* Mensajes */
 
 .notice {
@@ -1175,6 +1150,8 @@ footer {
     $("result-family").textContent =
       displayFamily(record);
 
+    // Se conserva la compatibilidad con los nombres de campo
+    // que devuelve la función RPC actual.
     const mesa =
       record.mesa_asignada ??
       record.mesa ??
@@ -1191,41 +1168,8 @@ footer {
     $("pending-count").textContent = pendingCount;
 
     const list = $("member-list");
+
     list.replaceChildren();
-
-    // La confirmación pública usa "No asistirán" cuando todos los
-    // boletos fueron liberados y no hay personas confirmadas.
-    const status = normalize(record.estado);
-    const noAttendance =
-      status === "no asistiran" ||
-      (
-        Number(record.boletos_liberados || 0) >= assigned &&
-        assigned > 0 &&
-        enteredCount === 0
-      );
-
-    if (noAttendance) {
-      hide("select-all-wrap");
-      hide("selection-error");
-
-      $("register-button").disabled = true;
-      $("register-button").classList.add("hidden");
-
-      const message = document.createElement("div");
-      message.className = "no-attendance";
-      message.innerHTML = [
-        '<p class="no-attendance-title">NO ASISTE</p>',
-        '<p class="no-attendance-text">',
-        'Esta invitación indicó que no asistirá. ',
-        'No se puede registrar ingreso para este folio.<br>',
-        '<strong>Consultar con anfitriona.</strong>',
-        '</p>'
-      ].join("");
-
-      list.appendChild(message);
-      show("result-card");
-      return;
-    }
 
     let selectableCount = 0;
 
@@ -1277,7 +1221,6 @@ footer {
     $("select-all").checked = false;
     $("select-all").indeterminate = false;
 
-    $("register-button").classList.remove("hidden");
     $("register-button").disabled =
       selectableCount === 0;
 
