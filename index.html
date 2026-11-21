@@ -769,6 +769,44 @@ footer {
     font-size: 8px;
   }
 }
+
+/* ===============================
+   ADMINISTRACIÓN DE ACCESO
+================================ */
+.admin-access { margin-top: 22px; }
+.admin-toggle { width:100%; min-height:48px; border:1px solid #d5e2ef; border-radius:14px; background:rgba(255,255,255,.9); color:#5d7690; font-size:12px; font-weight:700; letter-spacing:.03em; }
+.admin-toggle:hover { border-color:#9bb7d3; color:#173b67; }
+.admin-panel { margin-top:12px; padding:22px; }
+.admin-head { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:16px; }
+.admin-head h2 { margin:0; color:#173b67; font-size:18px; }
+.admin-head p { margin:4px 0 0; color:#72849a; font-size:12px; }
+.admin-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.secondary { min-height:42px; padding:0 16px; border:1px solid #cad9e8; border-radius:11px; background:#fff; color:#173b67; font-size:11px; font-weight:700; }
+.secondary:hover { border-color:#87a8ca; background:#f7fbff; }
+.admin-login { max-width:430px; margin:0 auto; }
+.admin-login label { display:block; margin:12px 0 6px; color:#547394; font-size:11px; font-weight:700; }
+.admin-login input { width:100%; min-height:46px; padding:0 13px; border:1px solid #cad9e8; border-radius:10px; outline:none; }
+.admin-login input:focus { border-color:#87a8ca; box-shadow:0 0 0 3px #497aab1a; }
+.admin-login button { width:100%; margin-top:15px; }
+.admin-error { margin-top:10px; color:#a43b3b; font-size:11px; }
+.access-search { display:grid; grid-template-columns:minmax(0,1fr) 120px; gap:9px; margin-bottom:15px; }
+.access-search input { width:100%; min-height:46px; padding:0 14px; border:1px solid #cad9e8; border-radius:10px; outline:none; }
+.access-search button { min-height:46px; }
+.access-record { border:1px solid #d6e2ed; border-radius:14px; overflow:hidden; background:#fff; }
+.access-record-head { padding:15px 17px; background:#f5f9fd; border-bottom:1px solid #dce7f1; }
+.access-record-head strong { display:block; color:#173b67; font-size:14px; }
+.access-record-head span { display:block; margin-top:3px; color:#72849a; font-size:11px; }
+.access-entry { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 17px; border-bottom:1px solid #edf2f6; }
+.access-entry:last-child { border-bottom:0; }
+.access-entry-info { min-width:0; }
+.access-entry-name { color:#183d67; font-size:13px; font-weight:700; overflow-wrap:anywhere; }
+.access-entry-time { margin-top:3px; color:#7a8da1; font-size:10px; }
+.undo-button { flex:none; min-height:34px; padding:0 11px; border:1px solid #e3baba; border-radius:9px; background:#fff7f7; color:#a43b3b; font-size:10px; font-weight:700; }
+.undo-button:hover { background:#fff0f0; border-color:#d99a9a; }
+.admin-empty { padding:20px; text-align:center; color:#72849a; font-size:11px; }
+.admin-loading { padding:15px; color:#72849a; font-size:11px; }
+.admin-session { color:#72849a; font-size:10px; }
+@media (max-width:620px){ .admin-panel{padding:17px;} .admin-head{align-items:flex-start; flex-direction:column;} .access-search{grid-template-columns:1fr;} .access-entry{align-items:flex-start; flex-direction:column;} .undo-button{width:100%;} }
 </style>
 </head>
 
@@ -905,6 +943,51 @@ footer {
 
     </div>
   </aside>
+
+
+
+  <section class="admin-access">
+    <button id="admin-toggle" type="button" class="admin-toggle">🔐 ADMINISTRACIÓN DE ACCESO</button>
+
+    <div id="admin-panel" class="card admin-panel hidden">
+      <div id="admin-login-view" class="admin-login">
+        <div class="admin-head">
+          <div>
+            <h2>Acceso administrativo</h2>
+            <p>Solo para corregir registros de entrada.</p>
+          </div>
+        </div>
+        <form id="admin-login-form">
+          <label for="admin-email">Correo</label>
+          <input id="admin-email" type="email" autocomplete="username" required>
+          <label for="admin-password">Contraseña</label>
+          <input id="admin-password" type="password" autocomplete="current-password" required>
+          <button id="admin-login-button" type="submit" class="primary">INGRESAR</button>
+          <div id="admin-login-error" class="admin-error"></div>
+        </form>
+      </div>
+
+      <div id="admin-content-view" class="hidden">
+        <div class="admin-head">
+          <div>
+            <h2>Corrección de accesos</h2>
+            <p>Desde aquí puedes deshacer un ingreso registrado por error.</p>
+          </div>
+          <div class="admin-actions">
+            <button id="admin-refresh" type="button" class="secondary">Actualizar</button>
+            <button id="admin-logout" type="button" class="secondary">Cerrar sesión</button>
+          </div>
+        </div>
+
+        <div class="access-search">
+          <input id="admin-search" type="search" autocomplete="off" placeholder="Número de invitación o nombre">
+          <button id="admin-search-button" type="button" class="primary">BUSCAR</button>
+        </div>
+        <div id="admin-session" class="admin-session"></div>
+        <div id="admin-results"></div>
+      </div>
+    </div>
+  </section>
 
   <footer>
     Uso exclusivo para el control de acceso del evento.<br>
@@ -1387,6 +1470,177 @@ footer {
       );
     }
   );
+
+
+  /* ===============================
+     ADMINISTRACIÓN DE ACCESO
+  ================================ */
+  async function updateAdminView() {
+    const { data } = await db.auth.getSession();
+    const session = data && data.session ? data.session : null;
+    if (session) {
+      show("admin-content-view");
+      hide("admin-login-view");
+      $("admin-session").textContent = session.user.email ? "Sesión activa: " + session.user.email : "Sesión administrativa activa.";
+      await adminSearch();
+    } else {
+      hide("admin-content-view");
+      show("admin-login-view");
+      $("admin-session").textContent = "";
+    }
+  }
+
+  function renderAdminRecord(record) {
+    const ingresos = Array.isArray(record.ingresos) ? record.ingresos : [];
+    const container = document.createElement("div");
+    container.className = "access-record";
+    const head = document.createElement("div");
+    head.className = "access-record-head";
+    head.innerHTML = "<strong>INVITACIÓN " + escapeHtml(record.numero_invitacion || record.folio || "") + "</strong><span>" + escapeHtml(record.familia || "Invitación") + " · " + ingresos.length + " ingreso(s) registrado(s)</span>";
+    container.appendChild(head);
+
+    if (!ingresos.length) {
+      const empty = document.createElement("div");
+      empty.className = "admin-empty";
+      empty.textContent = "No hay ingresos registrados para esta invitación.";
+      container.appendChild(empty);
+      return container;
+    }
+
+    ingresos.forEach(entry => {
+      const row = document.createElement("div");
+      row.className = "access-entry";
+      const info = document.createElement("div");
+      info.className = "access-entry-info";
+      const name = document.createElement("div");
+      name.className = "access-entry-name";
+      name.textContent = entry.nombre_integrante || "Sin nombre";
+      const time = document.createElement("div");
+      time.className = "access-entry-time";
+      time.textContent = entry.fecha_ingreso ? formatAccessDate(entry.fecha_ingreso) : "Fecha no disponible";
+      info.append(name, time);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "undo-button";
+      button.textContent = "DESHACER INGRESO";
+      button.addEventListener("click", () => undoAccess(record.invitacion_id || record.id, entry.nombre_integrante));
+      row.append(info, button);
+      container.appendChild(row);
+    });
+    return container;
+  }
+
+  function formatAccessDate(value) {
+    try {
+      return new Intl.DateTimeFormat("es-MX", { dateStyle: "short", timeStyle: "short" }).format(new Date(value));
+    } catch (_) {
+      return String(value);
+    }
+  }
+
+  async function adminSearch() {
+    const term = $("admin-search").value.trim();
+    const results = $("admin-results");
+    results.replaceChildren();
+    if (!term) {
+      const empty = document.createElement("div");
+      empty.className = "admin-empty";
+      empty.textContent = "Busca una invitación para ver sus ingresos.";
+      results.appendChild(empty);
+      return;
+    }
+
+    const { data: numberData, error: numberError } = await db.rpc("buscar_invitacion_control", { p_numero: term });
+    let records = Array.isArray(numberData) ? numberData : [];
+
+    if (!records.length) {
+      const { data: nameData, error: nameError } = await db.rpc("buscar_invitacion_nombre_control", { p_nombre: term });
+      if (nameError) console.error(nameError);
+      records = Array.isArray(nameData) ? nameData : [];
+    }
+
+    if (numberError && !records.length) console.error(numberError);
+
+    if (!records.length) {
+      const empty = document.createElement("div");
+      empty.className = "admin-empty";
+      empty.textContent = "No se encontró ninguna invitación con ese dato.";
+      results.appendChild(empty);
+      return;
+    }
+
+    records.forEach(record => results.appendChild(renderAdminRecord(record)));
+  }
+
+  async function undoAccess(invitationId, name) {
+    if (!invitationId || !name) return;
+    const ok = confirm("¿Deshacer el ingreso de " + name + "?\n\nLa persona volverá a aparecer como pendiente en el control de acceso.");
+    if (!ok) return;
+
+    const { data, error } = await db.rpc("deshacer_ingreso_control", {
+      p_invitacion_id: invitationId,
+      p_nombre_integrante: name
+    });
+
+    if (error) {
+      console.error(error);
+      alert("No fue posible deshacer el ingreso. Verifica que la función administrativa esté instalada en Supabase.");
+      return;
+    }
+
+    if (!data || data.ok !== true) {
+      alert("No se encontró un ingreso que pudiera deshacerse.");
+      return;
+    }
+
+    await refreshGlobalCount();
+    await adminSearch();
+    alert("Ingreso deshecho correctamente.");
+  }
+
+  $("admin-toggle").addEventListener("click", async () => {
+    const panel = $("admin-panel");
+    panel.classList.toggle("hidden");
+    if (!panel.classList.contains("hidden")) {
+      await updateAdminView();
+    }
+  });
+
+  $("admin-login-form").addEventListener("submit", async event => {
+    event.preventDefault();
+    const button = $("admin-login-button");
+    const errorBox = $("admin-login-error");
+    errorBox.textContent = "";
+    button.disabled = true;
+    button.textContent = "INGRESANDO…";
+
+    const { error } = await db.auth.signInWithPassword({
+      email: $("admin-email").value.trim(),
+      password: $("admin-password").value
+    });
+
+    button.disabled = false;
+    button.textContent = "INGRESAR";
+
+    if (error) {
+      console.error(error);
+      errorBox.textContent = "Correo o contraseña incorrectos.";
+      return;
+    }
+
+    $("admin-password").value = "";
+    await updateAdminView();
+  });
+
+  $("admin-search-button").addEventListener("click", adminSearch);
+  $("admin-search").addEventListener("keydown", event => {
+    if (event.key === "Enter") adminSearch();
+  });
+  $("admin-refresh").addEventListener("click", adminSearch);
+  $("admin-logout").addEventListener("click", async () => {
+    await db.auth.signOut();
+    await updateAdminView();
+  });
 
   // Cargar el contador al iniciar.
   refreshGlobalCount();
